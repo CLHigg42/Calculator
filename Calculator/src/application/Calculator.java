@@ -3,6 +3,9 @@ package application;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Calculator implements ActionListener {
 	
@@ -15,6 +18,13 @@ public class Calculator implements ActionListener {
 	JButton posNegButton, percentButton, rightPButton,leftPButton;
 	JPanel panel;
 	Font myFont = new Font("", Font.BOLD, 30);
+	
+	
+	
+	
+	double num1 = 0;
+	double num2 = 0;
+	char operand;
 	
 	Calculator(){
 		
@@ -94,28 +104,31 @@ public class Calculator implements ActionListener {
 		panel.setBounds(40,100,300,375);
 		panel.setLayout(new GridLayout(5,4,5,5));
 		panel.setBackground(Color.BLACK);	
-		panel.add(rightPButton);
-		panel.add(leftPButton);
-		panel.add(percentButton);
+		
 		panel.add(clearButton);
+		panel.add(posNegButton);
+		panel.add(percentButton);
+		panel.add(divButton);
+		
 		panel.add(numberButtons[7]);
 		panel.add(numberButtons[8]);
 		panel.add(numberButtons[9]);
-		panel.add(divButton);
+		panel.add(multiButton);
 		
 		panel.add(numberButtons[4]);
 		panel.add(numberButtons[5]);
 		panel.add(numberButtons[6]);
-		panel.add(multiButton);
+		panel.add(subtractButton);
 		
 		panel.add(numberButtons[1]);
 		panel.add(numberButtons[2]);
 		panel.add(numberButtons[3]);		
-		panel.add(subtractButton);
+		panel.add(addButton);
+		
 		panel.add(numberButtons[0]);
 		panel.add(decimalButton);
 		panel.add(equalButton);
-		panel.add(addButton);
+		
 
 		
 	
@@ -130,6 +143,7 @@ public class Calculator implements ActionListener {
 	public static void main(String[] args) {
 		Calculator calc = new Calculator();
 	}
+		
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -141,26 +155,28 @@ public class Calculator implements ActionListener {
 		if(e.getSource()==clearButton) {
 			text.setText("");
 		}
-		if(e.getSource()== rightPButton) {
-			text.setText(text.getText().concat("("));
-		}
-		if(e.getSource()== leftPButton) {
-			text.setText(text.getText().concat(")"));
-		}
+	
 		if(e.getSource()== divButton) {
-			text.setText(text.getText().concat("/"));
+			num1 = Double.parseDouble(text.getText());
+			text.setText(text.getText().concat(" / "));
 		}
 		if(e.getSource()== multiButton) {
-			text.setText(text.getText().concat("*"));
+			num1 = Double.parseDouble(text.getText());
+			text.setText(text.getText().concat(" * "));
+
 		}if(e.getSource()== subtractButton) {
-			text.setText(text.getText().concat("-"));
+			num1 = Double.parseDouble(text.getText());
+			text.setText(text.getText().concat(" - "));
+
 		}
 		if(e.getSource()== addButton) {
-			text.setText(text.getText().concat("+"));
+			num1 = Double.parseDouble(text.getText());
+			text.setText(text.getText().concat(" + "));
+			
+
 		}
-		//if(e.getSource()== equalButton) {
-			//text.setText(text.getText().concat(")"));
-		//}
+		
+		
 	}
 
 }

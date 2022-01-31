@@ -14,6 +14,7 @@ public class Calculator implements ActionListener {
 	JButton clearButton, deleteButton, equalButton, decimalButton;
 	JButton posNegButton, percentButton;
 	JPanel panel;
+	Font myFont = new Font("", Font.BOLD, 30);
 	
 	Calculator(){
 		
@@ -30,21 +31,30 @@ public class Calculator implements ActionListener {
 		
 		//Setting up buttons
 		addButton = new JButton("+");
-		addButton.setBackground(Color.ORANGE);
+		addButton.setBackground(Color.ORANGE.darker());
+		addButton.setForeground(Color.WHITE);
 		subtractButton = new JButton("-");
-		subtractButton.setBackground(Color.ORANGE);
+		subtractButton.setBackground(Color.ORANGE.darker());
+		subtractButton.setForeground(Color.WHITE);
 		multiButton = new JButton("*");
-		multiButton.setBackground(Color.ORANGE);
+		multiButton.setBackground(Color.ORANGE.darker());
+		multiButton.setForeground(Color.WHITE);
 		divButton = new JButton("/");
-		divButton.setBackground(Color.ORANGE);
+		divButton.setBackground(Color.ORANGE.darker());
+		divButton.setForeground(Color.WHITE);
 		decimalButton = new JButton(".");
-		decimalButton.setBackground(Color.GRAY);
+		decimalButton.setBackground(Color.DARK_GRAY);
+		decimalButton.setForeground(Color.WHITE);
 		equalButton = new JButton("=");
-		equalButton.setBackground(Color.ORANGE);
+		equalButton.setBackground(Color.ORANGE.darker());
+		equalButton.setForeground(Color.WHITE);
 		deleteButton = new JButton("Del");
 		clearButton = new JButton("C");
+		clearButton.setBackground(Color.LIGHT_GRAY);
 		posNegButton = new JButton("+/-");
+		posNegButton.setBackground(Color.LIGHT_GRAY);
 		percentButton = new JButton("%");
+		percentButton.setBackground(Color.LIGHT_GRAY);
 		
 		
 		functionButtons[0] = addButton;
@@ -61,12 +71,17 @@ public class Calculator implements ActionListener {
 		for (int i = 0; i <8; i++) {
 			functionButtons[i].addActionListener(this);
 			functionButtons[i].setFocusable(false);
+			functionButtons[i].setFont(myFont);
 		}
 		
 		for(int i = 0; i < 10; i++) {
 			numberButtons[i] = new JButton(String.valueOf(i));
 			numberButtons[i].addActionListener(this);
-			numberButtons[i].setBackground(Color.GRAY);
+			numberButtons[i].setFocusable(false);
+			numberButtons[i].setBackground(Color.DARK_GRAY);
+			numberButtons[i].setForeground(Color.WHITE);
+			numberButtons[i].setFont(myFont);
+
 			
 		}
 		deleteButton.setBounds(50,430, 50,50);

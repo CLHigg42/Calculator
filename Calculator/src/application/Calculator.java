@@ -9,10 +9,10 @@ public class Calculator implements ActionListener {
 	JFrame frame;
 	JTextField text;
 	JButton[] numberButtons = new JButton[10];
-	JButton[] functionButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[12];
 	JButton addButton, subtractButton, multiButton, divButton;
 	JButton clearButton, deleteButton, equalButton, decimalButton;
-	JButton posNegButton, percentButton;
+	JButton posNegButton, percentButton, rightPButton,leftPButton;
 	JPanel panel;
 	Font myFont = new Font("", Font.BOLD, 30);
 	
@@ -20,13 +20,14 @@ public class Calculator implements ActionListener {
 		
 		//Frame init
 		frame = new JFrame("Calculator");
-		frame.setSize(400, 500);
+		frame.setSize(400, 525);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);
 		
 		//Setting up text area
 		text = new JTextField();
 		text.setBounds(40, 30, 300, 50);
+		text.setFont(myFont);
 		text.setEditable(false);
 		
 		//Setting up buttons
@@ -55,7 +56,8 @@ public class Calculator implements ActionListener {
 		posNegButton.setBackground(Color.LIGHT_GRAY);
 		percentButton = new JButton("%");
 		percentButton.setBackground(Color.LIGHT_GRAY);
-		
+		rightPButton = new JButton("(");
+		leftPButton = new JButton(")");
 		
 		functionButtons[0] = addButton;
 		functionButtons[1] = subtractButton;
@@ -67,6 +69,8 @@ public class Calculator implements ActionListener {
 		functionButtons[7] = clearButton;
 		functionButtons[8] = posNegButton;
 		functionButtons[9] = percentButton;
+		functionButtons[10] = rightPButton;
+		functionButtons[11] = leftPButton;
 		
 		for (int i = 0; i <8; i++) {
 			functionButtons[i].addActionListener(this);
@@ -84,33 +88,34 @@ public class Calculator implements ActionListener {
 
 			
 		}
-		deleteButton.setBounds(50,430, 50,50);
-		clearButton.setBounds(300,430,50,50);
+		
 		
 		panel = new JPanel();
-		panel.setBounds(40,100,300,350);
-		panel.setLayout(new GridLayout(5,4,10,10));
-		panel.setBackground(Color.BLACK);		
-		panel.add(clearButton);
-		panel.add(posNegButton);
+		panel.setBounds(40,100,300,375);
+		panel.setLayout(new GridLayout(5,4,5,5));
+		panel.setBackground(Color.BLACK);	
+		panel.add(rightPButton);
+		panel.add(leftPButton);
 		panel.add(percentButton);
-		panel.add(divButton);
+		panel.add(clearButton);
 		panel.add(numberButtons[7]);
 		panel.add(numberButtons[8]);
 		panel.add(numberButtons[9]);
-		panel.add(multiButton);
+		panel.add(divButton);
+		
 		panel.add(numberButtons[4]);
 		panel.add(numberButtons[5]);
 		panel.add(numberButtons[6]);
-		panel.add(subtractButton);
+		panel.add(multiButton);
+		
 		panel.add(numberButtons[1]);
 		panel.add(numberButtons[2]);
-		panel.add(numberButtons[3]);
-		panel.add(addButton);
+		panel.add(numberButtons[3]);		
+		panel.add(subtractButton);
 		panel.add(numberButtons[0]);
 		panel.add(decimalButton);
 		panel.add(equalButton);
-
+		panel.add(addButton);
 
 		
 	
@@ -128,8 +133,34 @@ public class Calculator implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		for(int i = 0; i<10; i++) {
+			if(e.getSource()==numberButtons[i]){
+				text.setText(text.getText().concat(String.valueOf(i)));
+			}
+		}
+		if(e.getSource()==clearButton) {
+			text.setText("");
+		}
+		if(e.getSource()== rightPButton) {
+			text.setText(text.getText().concat("("));
+		}
+		if(e.getSource()== leftPButton) {
+			text.setText(text.getText().concat(")"));
+		}
+		if(e.getSource()== divButton) {
+			text.setText(text.getText().concat("/"));
+		}
+		if(e.getSource()== multiButton) {
+			text.setText(text.getText().concat("*"));
+		}if(e.getSource()== subtractButton) {
+			text.setText(text.getText().concat("-"));
+		}
+		if(e.getSource()== addButton) {
+			text.setText(text.getText().concat("+"));
+		}
+		//if(e.getSource()== equalButton) {
+			//text.setText(text.getText().concat(")"));
+		//}
 	}
 
 }

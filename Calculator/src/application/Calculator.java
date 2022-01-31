@@ -30,11 +30,17 @@ public class Calculator implements ActionListener {
 		
 		//Setting up buttons
 		addButton = new JButton("+");
+		addButton.setBackground(Color.ORANGE);
 		subtractButton = new JButton("-");
+		subtractButton.setBackground(Color.ORANGE);
 		multiButton = new JButton("*");
+		multiButton.setBackground(Color.ORANGE);
 		divButton = new JButton("/");
+		divButton.setBackground(Color.ORANGE);
 		decimalButton = new JButton(".");
+		decimalButton.setBackground(Color.GRAY);
 		equalButton = new JButton("=");
+		equalButton.setBackground(Color.ORANGE);
 		deleteButton = new JButton("Del");
 		clearButton = new JButton("C");
 		posNegButton = new JButton("+/-");
@@ -60,6 +66,7 @@ public class Calculator implements ActionListener {
 		for(int i = 0; i < 10; i++) {
 			numberButtons[i] = new JButton(String.valueOf(i));
 			numberButtons[i].addActionListener(this);
+			numberButtons[i].setBackground(Color.GRAY);
 			
 		}
 		deleteButton.setBounds(50,430, 50,50);
@@ -68,7 +75,7 @@ public class Calculator implements ActionListener {
 		panel = new JPanel();
 		panel.setBounds(40,100,300,350);
 		panel.setLayout(new GridLayout(5,4,10,10));
-		panel.setBackground(Color.GRAY);		
+		panel.setBackground(Color.BLACK);		
 		panel.add(clearButton);
 		panel.add(posNegButton);
 		panel.add(percentButton);
@@ -94,6 +101,8 @@ public class Calculator implements ActionListener {
 	
 		frame.add(panel);
 		frame.add(text);
+		frame.getContentPane().setBackground(Color.BLACK);
+		
 		frame.setVisible(true);
 		
 	}

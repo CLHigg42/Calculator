@@ -82,7 +82,7 @@ public class Calculator implements ActionListener {
 		functionButtons[10] = rightPButton;
 		functionButtons[11] = leftPButton;
 		
-		for (int i = 0; i <8; i++) {
+		for (int i = 0; i <12; i++) {
 			functionButtons[i].addActionListener(this);
 			functionButtons[i].setFocusable(false);
 			functionButtons[i].setFont(myFont);
@@ -172,8 +172,16 @@ public class Calculator implements ActionListener {
 		if(e.getSource()== addButton) {
 			num1 = Double.parseDouble(text.getText());
 			text.setText(text.getText().concat(" + "));
+		}
+		if (e.getSource() == equalButton) {
+			text.setText(String.valueOf(Consume_String.evaluate(text.getText())));
 			
-
+		}
+		if (e.getSource() == percentButton) {
+			double num = Double.parseDouble(text.getText());
+			num = num / 100;
+			text.setText("");
+			text.setText(text.getText().concat(String.valueOf(num)));
 		}
 		
 		

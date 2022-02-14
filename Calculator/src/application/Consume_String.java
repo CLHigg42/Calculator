@@ -39,7 +39,7 @@ public class Consume_String {
 					values.push(applyOps(operands.pop(),values.pop(),values.pop()));
 				operands.pop();
 			}
-			else if (tokens[i] == '+' || tokens[i] =='-' || tokens[i] == '*' || tokens[i] == '/') {
+			else if (tokens[i] == '+' || tokens[i] == '-' || tokens[i] == '*' || tokens[i] == '/') {
 				 while (!operands.empty() &&
 	                       hasPrecedence(tokens[i],
 	                                    operands.peek()))

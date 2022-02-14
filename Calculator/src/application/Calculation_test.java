@@ -9,8 +9,8 @@ class Calculation_test {
 	@Test
 	void test() {
 		
-		double result = Consume_String.evaluate("10 + 10");
-		assertEquals(20,result);
+		double result = Consume_String.evaluate("-10 - 11");
+		assertEquals(-21,result);
 		System.out.println(result);
 	}
 	@Test

@@ -1,14 +1,9 @@
 package application;
-
 import javax.swing.*;
-
-import org.junit.platform.commons.util.StringUtils;
+import javax.swing.border.LineBorder;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Calculator implements ActionListener {
 
@@ -18,12 +13,13 @@ public class Calculator implements ActionListener {
 	JButton[] functionButtons = new JButton[12];
 	JButton addButton, subtractButton, multiButton, divButton;
 	JButton clearButton, deleteButton, equalButton, decimalButton;
-	JButton posNegButton, percentButton, rightPButton, leftPButton;
+	JButton posNegButton, percentButton;
 	JPanel panel;
 	Font myFont = new Font("", Font.BOLD, 30);
-
-	
-	
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+	char operand;
 
 	Calculator() {
 
@@ -38,6 +34,10 @@ public class Calculator implements ActionListener {
 		text.setBounds(40, 30, 300, 50);
 		text.setFont(myFont);
 		text.setEditable(false);
+		text.setBackground(Color.BLACK);
+		text.setForeground(Color.WHITE);
+		text.setBorder( new LineBorder(Color.BLACK));
+		text.setHorizontalAlignment(SwingConstants.RIGHT);
 
 		// Setting up buttons
 		addButton = new JButton("+");
@@ -65,8 +65,6 @@ public class Calculator implements ActionListener {
 		posNegButton.setBackground(Color.LIGHT_GRAY);
 		percentButton = new JButton("%");
 		percentButton.setBackground(Color.LIGHT_GRAY);
-		rightPButton = new JButton("(");
-		leftPButton = new JButton(")");
 
 		functionButtons[0] = addButton;
 		functionButtons[1] = subtractButton;
@@ -78,10 +76,8 @@ public class Calculator implements ActionListener {
 		functionButtons[7] = clearButton;
 		functionButtons[8] = posNegButton;
 		functionButtons[9] = percentButton;
-		functionButtons[10] = rightPButton;
-		functionButtons[11] = leftPButton;
 
-		for (int i = 0; i < 12; i++) {
+		for (int i = 0; i < 10; i++) {
 			functionButtons[i].addActionListener(this);
 			functionButtons[i].setFocusable(false);
 			functionButtons[i].setFont(myFont);
@@ -146,56 +142,41 @@ public class Calculator implements ActionListener {
 			}
 		}
 		if (e.getSource() == clearButton) {
-			String expression = text.getText();
-			expression = expression.substring(0,expression.length()-1);
-			text.setText(expression);
-			
+			if (text.getText().length() > 0) {
+				String expression = text.getText();
+				expression = expression.substring(0, expression.length() - 1);
+				text.setText(expression);
+			}
+
 		}
 
 		if (e.getSource() == divButton) {
-
-			if (operatorCheck() == true) {
-				System.out.println("here");
-				text.setText(text.getText().concat(""));
-
-			} else {
-				text.setText(text.getText().concat("/"));
-			}
+			num1 = Double.parseDouble(text.getText());
+			operand = '/';
+			text.setText("");
 		}
 		if (e.getSource() == multiButton) {
-			if (operatorCheck() == true) {
-				System.out.println("here");
-				text.setText(text.getText().concat(""));
-
-			} else {
-			text.setText(text.getText().concat("*"));
-			}
+			num1 = Double.parseDouble(text.getText());
+			operand = '*';
+			text.setText("");
 
 		}
 		if (e.getSource() == subtractButton) {
-			if (operatorCheck() == true) {
-				System.out.println("here");
-				text.setText(text.getText().concat(""));
-
-			} else {
-			text.setText(text.getText().concat("-"));
-			}
+			num1 = Double.parseDouble(text.getText());
+			operand = '-';
+			text.setText("");
 
 		}
 		if (e.getSource() == addButton) {
-			if (operatorCheck() == true) {
-				System.out.println("here");
-				text.setText(text.getText().concat(""));
-
-			} else {
-			text.setText(text.getText().concat("+"));
-			}
+			num1 = Double.parseDouble(text.getText());
+			operand = '+';
+			text.setText("");
+		}
+		if (e.getSource() == decimalButton) {
+			text.setText(text.getText().concat("."));
 		}
 		if (e.getSource() == equalButton) {
-			if(text.getText().length() == 0) {
-				text.setText("0");
-			}
-			text.setText(String.valueOf(Consume_String.evaluate(text.getText())));
+			getResult();
 
 		}
 		if (e.getSource() == percentButton) {
@@ -204,38 +185,39 @@ public class Calculator implements ActionListener {
 			text.setText("");
 			text.setText(text.getText().concat(String.valueOf(num)));
 		}
-		if (e.getSource()==posNegButton){
-			String num;
-			String expression = text.getText();
-			num = expression.substring(expression.length()-1);
-			
-			
-			
-			
+		if (e.getSource() == posNegButton) {
+
+			double num = Double.parseDouble(String.valueOf(text.getText()));
+			num = num * (-1);
+			text.setText(String.valueOf(num));
 		}
-		
-			
-			
-			
+
 	}
 
-	
+	public void getResult() {
+		num2 = Double.parseDouble(text.getText());
 
-	public String removeLastChar(String s) {
-		return (s == null) ? null : s.replaceAll(".$", "");
-	}
+		switch (operand) {
 
-	public boolean operatorCheck() {
-		String expression = text.getText();
-		System.out.println(expression.substring(expression.length() - 1));
-		String op = expression.substring(expression.length() - 1);
+		case '+':
+			result = num1 + num2;
+			break;
+		case '-':
+			result = num1 - num2;
+			break;
 
-		try {
-			Double.parseDouble(op);
-		} catch (NumberFormatException e) {
-			return true;
+		case '*':
+			result = num1 * num2;
+			break;
+
+		case '/':
+			if (num2 == 0)
+				throw new UnsupportedOperationException("Infinity");
+			result = num1 / num2;
+			break;
 		}
-		return false;
+		text.setText(String.valueOf(result));
+		num1 = result;
 
 	}
 

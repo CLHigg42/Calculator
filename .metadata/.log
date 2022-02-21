@@ -464,3 +464,4100 @@ user global configuration and to define the default location to store repositori
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+!SESSION 2022-02-21 16:09:35.190 -----------------------------------------------
+eclipse.buildId=4.21.0.I20210906-0500
+java.version=17.0.1
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.oomph.p2.core 2 0 2022-02-21 16:09:37.974
+!MESSAGE Failed to register the thread safe credentials providers: 'java.util.Map org.eclipse.core.internal.runtime.AdapterManager.getFactories()'
+
+!ENTRY org.eclipse.jface 2 0 2022-02-21 16:09:39.691
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2022-02-21 16:09:39.691
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@2c1a0f82,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.lsp4e.symbolinworkspace,Go to Symbol in Workspace,
+		,
+		Category(org.eclipse.lsp4e.category,Language Servers,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@60e5db1d,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.egit.ui 2 0 2022-02-21 16:09:43.432
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Casey'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-21 17:39:29.003
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package application;
+
+import javax.swing.*;
+import javax.swing.text.AttributeSet.FontAttribute;
+
+import org.junit.platform.commons.util.StringUtils;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Calculator implements ActionListener {
+
+	JFrame frame;
+	JTextField text;
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[12];
+	JButton addButton, subtractButton, multiButton, divButton;
+	JButton clearButton, deleteButton, equalButton, decimalButton;
+	JButton posNegButton, percentButton;
+	JPanel panel;
+	Font myFont = new Font("", Font.BOLD, 30);
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+	char operand;
+
+	Calculator() {
+
+		// Frame init
+		frame = new JFrame("Calculator");
+		frame.setSize(400, 525);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+
+		// Setting up text area
+		text = new JTextField();
+		text.setBounds(40, 30, 300, 50);
+		text.setFont(myFont);
+		text.setEditable(false);
+
+		// Setting up buttons
+		addButton = new JButton("+");
+		addButton.setBackground(Color.ORANGE.darker());
+		addButton.setForeground(Color.WHITE);
+		subtractButton = new JButton("-");
+		subtractButton.setBackground(Color.ORANGE.darker());
+		subtractButton.setForeground(Color.WHITE);
+		multiButton = new JButton("*");
+		multiButton.setBackground(Color.ORANGE.darker());
+		multiButton.setForeground(Color.WHITE);
+		divButton = new JButton("/");
+		divButton.setBackground(Color.ORANGE.darker());
+		divButton.setForeground(Color.WHITE);
+		decimalButton = new JButton(".");
+		decimalButton.setBackground(Color.DARK_GRAY);
+		decimalButton.setForeground(Color.WHITE);
+		equalButton = new JButton("=");
+		equalButton.setBackground(Color.ORANGE.darker());
+		equalButton.setForeground(Color.WHITE);
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("C");
+		clearButton.setBackground(Color.LIGHT_GRAY);
+		posNegButton = new JButton("+/-");
+		posNegButton.setBackground(Color.LIGHT_GRAY);
+		percentButton = new JButton("%");
+		percentButton.setBackground(Color.LIGHT_GRAY);
+
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiButton;
+		functionButtons[3] = divButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = posNegButton;
+		functionButtons[9] = percentButton;
+
+		for (int i = 0; i < 10; i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFocusable(false);
+			functionButtons[i].setFont(myFont);
+		}
+
+		for (int i = 0; i < 10; i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFocusable(false);
+			numberButtons[i].setBackground(Color.DARK_GRAY);
+			numberButtons[i].setForeground(Color.WHITE);
+			numberButtons[i].setFont(myFont);
+
+		}
+
+		panel = new JPanel();
+		panel.setBounds(40, 100, 300, 375);
+		panel.setLayout(new GridLayout(5, 4, 5, 5));
+		panel.setBackground(Color.BLACK);
+
+		panel.add(clearButton);
+		panel.add(posNegButton);
+		panel.add(percentButton);
+		panel.add(divButton);
+
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiButton);
+
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+
+		panel.add(numberButtons[0]);
+		panel.add(decimalButton);
+		panel.add(equalButton);
+
+		frame.add(panel);
+		frame.add(text);
+		frame.getContentPane().setBackground(Color.BLACK);
+
+		frame.setVisible(true);
+
+	}
+
+	public static void main(String[] args) {
+		Calculator calc = new Calculator();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < 10; i++) {
+			if (e.getSource() == numberButtons[i]) {
+				text.setText(text.getText().concat(String.valueOf(i)));
+			}
+		}
+		if (e.getSource() == clearButton) {
+			 (text.getText().length() > 0) {
+				clearButton.setFont(myFont);
+				clearButton.setText("C");
+				String expression = text.getText();
+				expression = expression.substring(0, expression.length() - 1);
+				text.setText(expression);
+			}
+			else if (text.getText().length() <= 0){
+				Font allClear = new Font("", Font.BOLD, 25);
+				clearButton.setFont(allClear);
+				clearButton.setText("AC");
+				num1 = 0;
+			}
+
+		}
+
+		if (e.getSource() == divButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '/';
+			text.setText("");
+		}
+		if (e.getSource() == multiButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '*';
+			text.setText("");
+
+		}
+		if (e.getSource() == subtractButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '-';
+			text.setText("");
+
+		}
+		if (e.getSource() == addButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '+';
+			text.setText("");
+		}
+		if (e.getSource() == decimalButton) {
+			text.setText(text.getText().concat("."));
+		}
+		if (e.getSource() == equalButton) {
+			getResult();
+
+		}
+		if (e.getSource() == percentButton) {
+			double num = Double.parseDouble(text.getText());
+			num = num / 100;
+			text.setText("");
+			text.setText(text.getText().concat(String.valueOf(num)));
+		}
+		if (e.getSource() == posNegButton) {
+
+			double num = Double.parseDouble(String.valueOf(text.getText()));
+			num = num * (-1);
+			text.setText(String.valueOf(num));
+		}
+
+	}
+
+	public void getResult() {
+		num2 = Double.parseDouble(text.getText());
+
+		switch (operand) {
+
+		case '+':
+			result = num1 + num2;
+			break;
+		case '-':
+			result = num1 - num2;
+			break;
+
+		case '*':
+			result = num1 * num2;
+			break;
+
+		case '/':
+			if (num2 == 0)
+				throw new UnsupportedOperationException("Infinity");
+			result = num1 / num2;
+			break;
+		}
+		text.setText(String.valueOf(result));
+		num1 = result;
+
+	}
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 2 2022-02-21 17:39:29.004
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.ui".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 0 2022-02-21 17:39:29.004
+!MESSAGE Error in JDT Core during reconcile
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-21 17:39:29.210
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package application;
+
+import javax.swing.*;
+import javax.swing.text.AttributeSet.FontAttribute;
+
+import org.junit.platform.commons.util.StringUtils;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Calculator implements ActionListener {
+
+	JFrame frame;
+	JTextField text;
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[12];
+	JButton addButton, subtractButton, multiButton, divButton;
+	JButton clearButton, deleteButton, equalButton, decimalButton;
+	JButton posNegButton, percentButton;
+	JPanel panel;
+	Font myFont = new Font("", Font.BOLD, 30);
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+	char operand;
+
+	Calculator() {
+
+		// Frame init
+		frame = new JFrame("Calculator");
+		frame.setSize(400, 525);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+
+		// Setting up text area
+		text = new JTextField();
+		text.setBounds(40, 30, 300, 50);
+		text.setFont(myFont);
+		text.setEditable(false);
+
+		// Setting up buttons
+		addButton = new JButton("+");
+		addButton.setBackground(Color.ORANGE.darker());
+		addButton.setForeground(Color.WHITE);
+		subtractButton = new JButton("-");
+		subtractButton.setBackground(Color.ORANGE.darker());
+		subtractButton.setForeground(Color.WHITE);
+		multiButton = new JButton("*");
+		multiButton.setBackground(Color.ORANGE.darker());
+		multiButton.setForeground(Color.WHITE);
+		divButton = new JButton("/");
+		divButton.setBackground(Color.ORANGE.darker());
+		divButton.setForeground(Color.WHITE);
+		decimalButton = new JButton(".");
+		decimalButton.setBackground(Color.DARK_GRAY);
+		decimalButton.setForeground(Color.WHITE);
+		equalButton = new JButton("=");
+		equalButton.setBackground(Color.ORANGE.darker());
+		equalButton.setForeground(Color.WHITE);
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("C");
+		clearButton.setBackground(Color.LIGHT_GRAY);
+		posNegButton = new JButton("+/-");
+		posNegButton.setBackground(Color.LIGHT_GRAY);
+		percentButton = new JButton("%");
+		percentButton.setBackground(Color.LIGHT_GRAY);
+
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiButton;
+		functionButtons[3] = divButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = posNegButton;
+		functionButtons[9] = percentButton;
+
+		for (int i = 0; i < 10; i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFocusable(false);
+			functionButtons[i].setFont(myFont);
+		}
+
+		for (int i = 0; i < 10; i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFocusable(false);
+			numberButtons[i].setBackground(Color.DARK_GRAY);
+			numberButtons[i].setForeground(Color.WHITE);
+			numberButtons[i].setFont(myFont);
+
+		}
+
+		panel = new JPanel();
+		panel.setBounds(40, 100, 300, 375);
+		panel.setLayout(new GridLayout(5, 4, 5, 5));
+		panel.setBackground(Color.BLACK);
+
+		panel.add(clearButton);
+		panel.add(posNegButton);
+		panel.add(percentButton);
+		panel.add(divButton);
+
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiButton);
+
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+
+		panel.add(numberButtons[0]);
+		panel.add(decimalButton);
+		panel.add(equalButton);
+
+		frame.add(panel);
+		frame.add(text);
+		frame.getContentPane().setBackground(Color.BLACK);
+
+		frame.setVisible(true);
+
+	}
+
+	public static void main(String[] args) {
+		Calculator calc = new Calculator();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < 10; i++) {
+			if (e.getSource() == numberButtons[i]) {
+				text.setText(text.getText().concat(String.valueOf(i)));
+			}
+		}
+		if (e.getSource() == clearButton) {
+			 (text.getText().length() > 0) {
+				clearButton.setFont(myFont);
+				clearButton.setText("C");
+				String expression = text.getText();
+				expression = expression.substring(0, expression.length() - 1);
+				text.setText(expression);
+			}
+			else if (text.getText().length() <= 0){
+				Font allClear = new Font("", Font.BOLD, 25);
+				clearButton.setFont(allClear);
+				clearButton.setText("AC");
+				num1 = 0;
+			}
+
+		}
+
+		if (e.getSource() == divButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '/';
+			text.setText("");
+		}
+		if (e.getSource() == multiButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '*';
+			text.setText("");
+
+		}
+		if (e.getSource() == subtractButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '-';
+			text.setText("");
+
+		}
+		if (e.getSource() == addButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '+';
+			text.setText("");
+		}
+		if (e.getSource() == decimalButton) {
+			text.setText(text.getText().concat("."));
+		}
+		if (e.getSource() == equalButton) {
+			getResult();
+
+		}
+		if (e.getSource() == percentButton) {
+			double num = Double.parseDouble(text.getText());
+			num = num / 100;
+			text.setText("");
+			text.setText(text.getText().concat(String.valueOf(num)));
+		}
+		if (e.getSource() == posNegButton) {
+
+			double num = Double.parseDouble(String.valueOf(text.getText()));
+			num = num * (-1);
+			text.setText(String.valueOf(num));
+		}
+
+	}
+
+	public void getResult() {
+		num2 = Double.parseDouble(text.getText());
+
+		switch (operand) {
+
+		case '+':
+			result = num1 + num2;
+			break;
+		case '-':
+			result = num1 - num2;
+			break;
+
+		case '*':
+			result = num1 * num2;
+			break;
+
+		case '/':
+			if (num2 == 0)
+				throw new UnsupportedOperationException("Infinity");
+			result = num1 / num2;
+			break;
+		}
+		text.setText(String.valueOf(result));
+		num1 = result;
+
+	}
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 2 2022-02-21 17:39:29.211
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.core.manipulation".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 0 2022-02-21 17:39:29.212
+!MESSAGE Error in JDT Core during AST creation
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-21 17:41:46.685
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package application;
+
+import javax.swing.*;
+import javax.swing.text.AttributeSet.FontAttribute;
+
+import org.junit.platform.commons.util.StringUtils;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Calculator implements ActionListener {
+
+	JFrame frame;
+	JTextField text;
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[12];
+	JButton addButton, subtractButton, multiButton, divButton;
+	JButton clearButton, deleteButton, equalButton, decimalButton;
+	JButton posNegButton, percentButton;
+	JPanel panel;
+	Font myFont = new Font("", Font.BOLD, 30);
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+	char operand;
+
+	Calculator() {
+
+		// Frame init
+		frame = new JFrame("Calculator");
+		frame.setSize(400, 525);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+
+		// Setting up text area
+		text = new JTextField();
+		text.setBounds(40, 30, 300, 50);
+		text.setFont(myFont);
+		text.setEditable(false);
+
+		// Setting up buttons
+		addButton = new JButton("+");
+		addButton.setBackground(Color.ORANGE.darker());
+		addButton.setForeground(Color.WHITE);
+		subtractButton = new JButton("-");
+		subtractButton.setBackground(Color.ORANGE.darker());
+		subtractButton.setForeground(Color.WHITE);
+		multiButton = new JButton("*");
+		multiButton.setBackground(Color.ORANGE.darker());
+		multiButton.setForeground(Color.WHITE);
+		divButton = new JButton("/");
+		divButton.setBackground(Color.ORANGE.darker());
+		divButton.setForeground(Color.WHITE);
+		decimalButton = new JButton(".");
+		decimalButton.setBackground(Color.DARK_GRAY);
+		decimalButton.setForeground(Color.WHITE);
+		equalButton = new JButton("=");
+		equalButton.setBackground(Color.ORANGE.darker());
+		equalButton.setForeground(Color.WHITE);
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("C");
+		clearButton.setBackground(Color.LIGHT_GRAY);
+		posNegButton = new JButton("+/-");
+		posNegButton.setBackground(Color.LIGHT_GRAY);
+		percentButton = new JButton("%");
+		percentButton.setBackground(Color.LIGHT_GRAY);
+
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiButton;
+		functionButtons[3] = divButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = posNegButton;
+		functionButtons[9] = percentButton;
+
+		for (int i = 0; i < 10; i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFocusable(false);
+			functionButtons[i].setFont(myFont);
+		}
+
+		for (int i = 0; i < 10; i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFocusable(false);
+			numberButtons[i].setBackground(Color.DARK_GRAY);
+			numberButtons[i].setForeground(Color.WHITE);
+			numberButtons[i].setFont(myFont);
+
+		}
+
+		panel = new JPanel();
+		panel.setBounds(40, 100, 300, 375);
+		panel.setLayout(new GridLayout(5, 4, 5, 5));
+		panel.setBackground(Color.BLACK);
+
+		panel.add(clearButton);
+		panel.add(posNegButton);
+		panel.add(percentButton);
+		panel.add(divButton);
+
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiButton);
+
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+
+		panel.add(numberButtons[0]);
+		panel.add(decimalButton);
+		panel.add(equalButton);
+
+		frame.add(panel);
+		frame.add(text);
+		frame.getContentPane().setBackground(Color.BLACK);
+
+		frame.setVisible(true);
+
+	}
+
+	public static void main(String[] args) {
+		Calculator calc = new Calculator();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < 10; i++) {
+			if (e.getSource() == numberButtons[i]) {
+				text.setText(text.getText().concat(String.valueOf(i)));
+			}
+		}
+		if (e.getSource() == clearButton) {
+			(text.getText().length() > 0) {
+				clearButton.setFont(myFont);
+				clearButton.setText("C");
+				String expression = text.getText();
+				expression = expression.substring(0, expression.length() - 1);
+				text.setText(expression);
+				if (text.getText().length() <= 0){
+					Font allClear = new Font("", Font.BOLD, 25);
+					clearButton.setFont(allClear);
+					clearButton.setText("AC");
+					num1 = 0;
+				}
+			}
+			if (text.getText().length() <= 0){
+				Font allClear = new Font("", Font.BOLD, 25);
+				clearButton.setFont(allClear);
+				clearButton.setText("AC");
+				num1 = 0;
+			}
+
+		}
+
+		if (e.getSource() == divButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '/';
+			text.setText("");
+		}
+		if (e.getSource() == multiButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '*';
+			text.setText("");
+
+		}
+		if (e.getSource() == subtractButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '-';
+			text.setText("");
+
+		}
+		if (e.getSource() == addButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '+';
+			text.setText("");
+		}
+		if (e.getSource() == decimalButton) {
+			text.setText(text.getText().concat("."));
+		}
+		if (e.getSource() == equalButton) {
+			getResult();
+
+		}
+		if (e.getSource() == percentButton) {
+			double num = Double.parseDouble(text.getText());
+			num = num / 100;
+			text.setText("");
+			text.setText(text.getText().concat(String.valueOf(num)));
+		}
+		if (e.getSource() == posNegButton) {
+
+			double num = Double.parseDouble(String.valueOf(text.getText()));
+			num = num * (-1);
+			text.setText(String.valueOf(num));
+		}
+
+	}
+
+	public void getResult() {
+		num2 = Double.parseDouble(text.getText());
+
+		switch (operand) {
+
+		case '+':
+			result = num1 + num2;
+			break;
+		case '-':
+			result = num1 - num2;
+			break;
+
+		case '*':
+			result = num1 * num2;
+			break;
+
+		case '/':
+			if (num2 == 0)
+				throw new UnsupportedOperationException("Infinity");
+			result = num1 / num2;
+			break;
+		}
+		text.setText(String.valueOf(result));
+		num1 = result;
+
+	}
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 2 2022-02-21 17:41:46.685
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.ui".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 0 2022-02-21 17:41:46.686
+!MESSAGE Error in JDT Core during reconcile
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-21 17:41:47.041
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package application;
+
+import javax.swing.*;
+import javax.swing.text.AttributeSet.FontAttribute;
+
+import org.junit.platform.commons.util.StringUtils;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Calculator implements ActionListener {
+
+	JFrame frame;
+	JTextField text;
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[12];
+	JButton addButton, subtractButton, multiButton, divButton;
+	JButton clearButton, deleteButton, equalButton, decimalButton;
+	JButton posNegButton, percentButton;
+	JPanel panel;
+	Font myFont = new Font("", Font.BOLD, 30);
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+	char operand;
+
+	Calculator() {
+
+		// Frame init
+		frame = new JFrame("Calculator");
+		frame.setSize(400, 525);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+
+		// Setting up text area
+		text = new JTextField();
+		text.setBounds(40, 30, 300, 50);
+		text.setFont(myFont);
+		text.setEditable(false);
+
+		// Setting up buttons
+		addButton = new JButton("+");
+		addButton.setBackground(Color.ORANGE.darker());
+		addButton.setForeground(Color.WHITE);
+		subtractButton = new JButton("-");
+		subtractButton.setBackground(Color.ORANGE.darker());
+		subtractButton.setForeground(Color.WHITE);
+		multiButton = new JButton("*");
+		multiButton.setBackground(Color.ORANGE.darker());
+		multiButton.setForeground(Color.WHITE);
+		divButton = new JButton("/");
+		divButton.setBackground(Color.ORANGE.darker());
+		divButton.setForeground(Color.WHITE);
+		decimalButton = new JButton(".");
+		decimalButton.setBackground(Color.DARK_GRAY);
+		decimalButton.setForeground(Color.WHITE);
+		equalButton = new JButton("=");
+		equalButton.setBackground(Color.ORANGE.darker());
+		equalButton.setForeground(Color.WHITE);
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("C");
+		clearButton.setBackground(Color.LIGHT_GRAY);
+		posNegButton = new JButton("+/-");
+		posNegButton.setBackground(Color.LIGHT_GRAY);
+		percentButton = new JButton("%");
+		percentButton.setBackground(Color.LIGHT_GRAY);
+
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiButton;
+		functionButtons[3] = divButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = posNegButton;
+		functionButtons[9] = percentButton;
+
+		for (int i = 0; i < 10; i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFocusable(false);
+			functionButtons[i].setFont(myFont);
+		}
+
+		for (int i = 0; i < 10; i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFocusable(false);
+			numberButtons[i].setBackground(Color.DARK_GRAY);
+			numberButtons[i].setForeground(Color.WHITE);
+			numberButtons[i].setFont(myFont);
+
+		}
+
+		panel = new JPanel();
+		panel.setBounds(40, 100, 300, 375);
+		panel.setLayout(new GridLayout(5, 4, 5, 5));
+		panel.setBackground(Color.BLACK);
+
+		panel.add(clearButton);
+		panel.add(posNegButton);
+		panel.add(percentButton);
+		panel.add(divButton);
+
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiButton);
+
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+
+		panel.add(numberButtons[0]);
+		panel.add(decimalButton);
+		panel.add(equalButton);
+
+		frame.add(panel);
+		frame.add(text);
+		frame.getContentPane().setBackground(Color.BLACK);
+
+		frame.setVisible(true);
+
+	}
+
+	public static void main(String[] args) {
+		Calculator calc = new Calculator();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < 10; i++) {
+			if (e.getSource() == numberButtons[i]) {
+				text.setText(text.getText().concat(String.valueOf(i)));
+			}
+		}
+		if (e.getSource() == clearButton) {
+			(text.getText().length() > 0) {
+				clearButton.setFont(myFont);
+				clearButton.setText("C");
+				String expression = text.getText();
+				expression = expression.substring(0, expression.length() - 1);
+				text.setText(expression);
+				if (text.getText().length() <= 0){
+					Font allClear = new Font("", Font.BOLD, 25);
+					clearButton.setFont(allClear);
+					clearButton.setText("AC");
+					num1 = 0;
+				}
+			}
+			if (text.getText().length() <= 0){
+				Font allClear = new Font("", Font.BOLD, 25);
+				clearButton.setFont(allClear);
+				clearButton.setText("AC");
+				num1 = 0;
+			}
+
+		}
+
+		if (e.getSource() == divButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '/';
+			text.setText("");
+		}
+		if (e.getSource() == multiButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '*';
+			text.setText("");
+
+		}
+		if (e.getSource() == subtractButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '-';
+			text.setText("");
+
+		}
+		if (e.getSource() == addButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '+';
+			text.setText("");
+		}
+		if (e.getSource() == decimalButton) {
+			text.setText(text.getText().concat("."));
+		}
+		if (e.getSource() == equalButton) {
+			getResult();
+
+		}
+		if (e.getSource() == percentButton) {
+			double num = Double.parseDouble(text.getText());
+			num = num / 100;
+			text.setText("");
+			text.setText(text.getText().concat(String.valueOf(num)));
+		}
+		if (e.getSource() == posNegButton) {
+
+			double num = Double.parseDouble(String.valueOf(text.getText()));
+			num = num * (-1);
+			text.setText(String.valueOf(num));
+		}
+
+	}
+
+	public void getResult() {
+		num2 = Double.parseDouble(text.getText());
+
+		switch (operand) {
+
+		case '+':
+			result = num1 + num2;
+			break;
+		case '-':
+			result = num1 - num2;
+			break;
+
+		case '*':
+			result = num1 * num2;
+			break;
+
+		case '/':
+			if (num2 == 0)
+				throw new UnsupportedOperationException("Infinity");
+			result = num1 / num2;
+			break;
+		}
+		text.setText(String.valueOf(result));
+		num1 = result;
+
+	}
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 2 2022-02-21 17:41:47.041
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.core.manipulation".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 0 2022-02-21 17:41:47.042
+!MESSAGE Error in JDT Core during AST creation
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-21 17:41:48.693
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package application;
+
+import javax.swing.*;
+import javax.swing.text.AttributeSet.FontAttribute;
+
+import org.junit.platform.commons.util.StringUtils;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Calculator implements ActionListener {
+
+	JFrame frame;
+	JTextField text;
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[12];
+	JButton addButton, subtractButton, multiButton, divButton;
+	JButton clearButton, deleteButton, equalButton, decimalButton;
+	JButton posNegButton, percentButton;
+	JPanel panel;
+	Font myFont = new Font("", Font.BOLD, 30);
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+	char operand;
+
+	Calculator() {
+
+		// Frame init
+		frame = new JFrame("Calculator");
+		frame.setSize(400, 525);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+
+		// Setting up text area
+		text = new JTextField();
+		text.setBounds(40, 30, 300, 50);
+		text.setFont(myFont);
+		text.setEditable(false);
+
+		// Setting up buttons
+		addButton = new JButton("+");
+		addButton.setBackground(Color.ORANGE.darker());
+		addButton.setForeground(Color.WHITE);
+		subtractButton = new JButton("-");
+		subtractButton.setBackground(Color.ORANGE.darker());
+		subtractButton.setForeground(Color.WHITE);
+		multiButton = new JButton("*");
+		multiButton.setBackground(Color.ORANGE.darker());
+		multiButton.setForeground(Color.WHITE);
+		divButton = new JButton("/");
+		divButton.setBackground(Color.ORANGE.darker());
+		divButton.setForeground(Color.WHITE);
+		decimalButton = new JButton(".");
+		decimalButton.setBackground(Color.DARK_GRAY);
+		decimalButton.setForeground(Color.WHITE);
+		equalButton = new JButton("=");
+		equalButton.setBackground(Color.ORANGE.darker());
+		equalButton.setForeground(Color.WHITE);
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("C");
+		clearButton.setBackground(Color.LIGHT_GRAY);
+		posNegButton = new JButton("+/-");
+		posNegButton.setBackground(Color.LIGHT_GRAY);
+		percentButton = new JButton("%");
+		percentButton.setBackground(Color.LIGHT_GRAY);
+
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiButton;
+		functionButtons[3] = divButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = posNegButton;
+		functionButtons[9] = percentButton;
+
+		for (int i = 0; i < 10; i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFocusable(false);
+			functionButtons[i].setFont(myFont);
+		}
+
+		for (int i = 0; i < 10; i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFocusable(false);
+			numberButtons[i].setBackground(Color.DARK_GRAY);
+			numberButtons[i].setForeground(Color.WHITE);
+			numberButtons[i].setFont(myFont);
+
+		}
+
+		panel = new JPanel();
+		panel.setBounds(40, 100, 300, 375);
+		panel.setLayout(new GridLayout(5, 4, 5, 5));
+		panel.setBackground(Color.BLACK);
+
+		panel.add(clearButton);
+		panel.add(posNegButton);
+		panel.add(percentButton);
+		panel.add(divButton);
+
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiButton);
+
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+
+		panel.add(numberButtons[0]);
+		panel.add(decimalButton);
+		panel.add(equalButton);
+
+		frame.add(panel);
+		frame.add(text);
+		frame.getContentPane().setBackground(Color.BLACK);
+
+		frame.setVisible(true);
+
+	}
+
+	public static void main(String[] args) {
+		Calculator calc = new Calculator();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < 10; i++) {
+			if (e.getSource() == numberButtons[i]) {
+				text.setText(text.getText().concat(String.valueOf(i)));
+			}
+		}
+		if (e.getSource() == clearButton) {
+			do(text.getText().length() > 0) {
+				clearButton.setFont(myFont);
+				clearButton.setText("C");
+				String expression = text.getText();
+				expression = expression.substring(0, expression.length() - 1);
+				text.setText(expression);
+				if (text.getText().length() <= 0){
+					Font allClear = new Font("", Font.BOLD, 25);
+					clearButton.setFont(allClear);
+					clearButton.setText("AC");
+					num1 = 0;
+				}
+			}
+			if (text.getText().length() <= 0){
+				Font allClear = new Font("", Font.BOLD, 25);
+				clearButton.setFont(allClear);
+				clearButton.setText("AC");
+				num1 = 0;
+			}
+
+		}
+
+		if (e.getSource() == divButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '/';
+			text.setText("");
+		}
+		if (e.getSource() == multiButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '*';
+			text.setText("");
+
+		}
+		if (e.getSource() == subtractButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '-';
+			text.setText("");
+
+		}
+		if (e.getSource() == addButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '+';
+			text.setText("");
+		}
+		if (e.getSource() == decimalButton) {
+			text.setText(text.getText().concat("."));
+		}
+		if (e.getSource() == equalButton) {
+			getResult();
+
+		}
+		if (e.getSource() == percentButton) {
+			double num = Double.parseDouble(text.getText());
+			num = num / 100;
+			text.setText("");
+			text.setText(text.getText().concat(String.valueOf(num)));
+		}
+		if (e.getSource() == posNegButton) {
+
+			double num = Double.parseDouble(String.valueOf(text.getText()));
+			num = num * (-1);
+			text.setText(String.valueOf(num));
+		}
+
+	}
+
+	public void getResult() {
+		num2 = Double.parseDouble(text.getText());
+
+		switch (operand) {
+
+		case '+':
+			result = num1 + num2;
+			break;
+		case '-':
+			result = num1 - num2;
+			break;
+
+		case '*':
+			result = num1 * num2;
+			break;
+
+		case '/':
+			if (num2 == 0)
+				throw new UnsupportedOperationException("Infinity");
+			result = num1 / num2;
+			break;
+		}
+		text.setText(String.valueOf(result));
+		num1 = result;
+
+	}
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 2 2022-02-21 17:41:48.694
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.ui".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 0 2022-02-21 17:41:48.694
+!MESSAGE Error in JDT Core during reconcile
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-21 17:41:48.700
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package application;
+
+import javax.swing.*;
+import javax.swing.text.AttributeSet.FontAttribute;
+
+import org.junit.platform.commons.util.StringUtils;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Calculator implements ActionListener {
+
+	JFrame frame;
+	JTextField text;
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[12];
+	JButton addButton, subtractButton, multiButton, divButton;
+	JButton clearButton, deleteButton, equalButton, decimalButton;
+	JButton posNegButton, percentButton;
+	JPanel panel;
+	Font myFont = new Font("", Font.BOLD, 30);
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+	char operand;
+
+	Calculator() {
+
+		// Frame init
+		frame = new JFrame("Calculator");
+		frame.setSize(400, 525);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+
+		// Setting up text area
+		text = new JTextField();
+		text.setBounds(40, 30, 300, 50);
+		text.setFont(myFont);
+		text.setEditable(false);
+
+		// Setting up buttons
+		addButton = new JButton("+");
+		addButton.setBackground(Color.ORANGE.darker());
+		addButton.setForeground(Color.WHITE);
+		subtractButton = new JButton("-");
+		subtractButton.setBackground(Color.ORANGE.darker());
+		subtractButton.setForeground(Color.WHITE);
+		multiButton = new JButton("*");
+		multiButton.setBackground(Color.ORANGE.darker());
+		multiButton.setForeground(Color.WHITE);
+		divButton = new JButton("/");
+		divButton.setBackground(Color.ORANGE.darker());
+		divButton.setForeground(Color.WHITE);
+		decimalButton = new JButton(".");
+		decimalButton.setBackground(Color.DARK_GRAY);
+		decimalButton.setForeground(Color.WHITE);
+		equalButton = new JButton("=");
+		equalButton.setBackground(Color.ORANGE.darker());
+		equalButton.setForeground(Color.WHITE);
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("C");
+		clearButton.setBackground(Color.LIGHT_GRAY);
+		posNegButton = new JButton("+/-");
+		posNegButton.setBackground(Color.LIGHT_GRAY);
+		percentButton = new JButton("%");
+		percentButton.setBackground(Color.LIGHT_GRAY);
+
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiButton;
+		functionButtons[3] = divButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = posNegButton;
+		functionButtons[9] = percentButton;
+
+		for (int i = 0; i < 10; i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFocusable(false);
+			functionButtons[i].setFont(myFont);
+		}
+
+		for (int i = 0; i < 10; i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFocusable(false);
+			numberButtons[i].setBackground(Color.DARK_GRAY);
+			numberButtons[i].setForeground(Color.WHITE);
+			numberButtons[i].setFont(myFont);
+
+		}
+
+		panel = new JPanel();
+		panel.setBounds(40, 100, 300, 375);
+		panel.setLayout(new GridLayout(5, 4, 5, 5));
+		panel.setBackground(Color.BLACK);
+
+		panel.add(clearButton);
+		panel.add(posNegButton);
+		panel.add(percentButton);
+		panel.add(divButton);
+
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiButton);
+
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+
+		panel.add(numberButtons[0]);
+		panel.add(decimalButton);
+		panel.add(equalButton);
+
+		frame.add(panel);
+		frame.add(text);
+		frame.getContentPane().setBackground(Color.BLACK);
+
+		frame.setVisible(true);
+
+	}
+
+	public static void main(String[] args) {
+		Calculator calc = new Calculator();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < 10; i++) {
+			if (e.getSource() == numberButtons[i]) {
+				text.setText(text.getText().concat(String.valueOf(i)));
+			}
+		}
+		if (e.getSource() == clearButton) {
+			do(text.getText().length() > 0) {
+				clearButton.setFont(myFont);
+				clearButton.setText("C");
+				String expression = text.getText();
+				expression = expression.substring(0, expression.length() - 1);
+				text.setText(expression);
+				if (text.getText().length() <= 0){
+					Font allClear = new Font("", Font.BOLD, 25);
+					clearButton.setFont(allClear);
+					clearButton.setText("AC");
+					num1 = 0;
+				}
+			}
+			if (text.getText().length() <= 0){
+				Font allClear = new Font("", Font.BOLD, 25);
+				clearButton.setFont(allClear);
+				clearButton.setText("AC");
+				num1 = 0;
+			}
+
+		}
+
+		if (e.getSource() == divButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '/';
+			text.setText("");
+		}
+		if (e.getSource() == multiButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '*';
+			text.setText("");
+
+		}
+		if (e.getSource() == subtractButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '-';
+			text.setText("");
+
+		}
+		if (e.getSource() == addButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '+';
+			text.setText("");
+		}
+		if (e.getSource() == decimalButton) {
+			text.setText(text.getText().concat("."));
+		}
+		if (e.getSource() == equalButton) {
+			getResult();
+
+		}
+		if (e.getSource() == percentButton) {
+			double num = Double.parseDouble(text.getText());
+			num = num / 100;
+			text.setText("");
+			text.setText(text.getText().concat(String.valueOf(num)));
+		}
+		if (e.getSource() == posNegButton) {
+
+			double num = Double.parseDouble(String.valueOf(text.getText()));
+			num = num * (-1);
+			text.setText(String.valueOf(num));
+		}
+
+	}
+
+	public void getResult() {
+		num2 = Double.parseDouble(text.getText());
+
+		switch (operand) {
+
+		case '+':
+			result = num1 + num2;
+			break;
+		case '-':
+			result = num1 - num2;
+			break;
+
+		case '*':
+			result = num1 * num2;
+			break;
+
+		case '/':
+			if (num2 == 0)
+				throw new UnsupportedOperationException("Infinity");
+			result = num1 / num2;
+			break;
+		}
+		text.setText(String.valueOf(result));
+		num1 = result;
+
+	}
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:187)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 2 2022-02-21 17:41:48.701
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.core.manipulation".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:187)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 0 2022-02-21 17:41:48.701
+!MESSAGE Error in JDT Core during AST creation
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:187)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-21 17:41:51.970
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package application;
+
+import javax.swing.*;
+import javax.swing.text.AttributeSet.FontAttribute;
+
+import org.junit.platform.commons.util.StringUtils;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Calculator implements ActionListener {
+
+	JFrame frame;
+	JTextField text;
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[12];
+	JButton addButton, subtractButton, multiButton, divButton;
+	JButton clearButton, deleteButton, equalButton, decimalButton;
+	JButton posNegButton, percentButton;
+	JPanel panel;
+	Font myFont = new Font("", Font.BOLD, 30);
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+	char operand;
+
+	Calculator() {
+
+		// Frame init
+		frame = new JFrame("Calculator");
+		frame.setSize(400, 525);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+
+		// Setting up text area
+		text = new JTextField();
+		text.setBounds(40, 30, 300, 50);
+		text.setFont(myFont);
+		text.setEditable(false);
+
+		// Setting up buttons
+		addButton = new JButton("+");
+		addButton.setBackground(Color.ORANGE.darker());
+		addButton.setForeground(Color.WHITE);
+		subtractButton = new JButton("-");
+		subtractButton.setBackground(Color.ORANGE.darker());
+		subtractButton.setForeground(Color.WHITE);
+		multiButton = new JButton("*");
+		multiButton.setBackground(Color.ORANGE.darker());
+		multiButton.setForeground(Color.WHITE);
+		divButton = new JButton("/");
+		divButton.setBackground(Color.ORANGE.darker());
+		divButton.setForeground(Color.WHITE);
+		decimalButton = new JButton(".");
+		decimalButton.setBackground(Color.DARK_GRAY);
+		decimalButton.setForeground(Color.WHITE);
+		equalButton = new JButton("=");
+		equalButton.setBackground(Color.ORANGE.darker());
+		equalButton.setForeground(Color.WHITE);
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("C");
+		clearButton.setBackground(Color.LIGHT_GRAY);
+		posNegButton = new JButton("+/-");
+		posNegButton.setBackground(Color.LIGHT_GRAY);
+		percentButton = new JButton("%");
+		percentButton.setBackground(Color.LIGHT_GRAY);
+
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiButton;
+		functionButtons[3] = divButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = posNegButton;
+		functionButtons[9] = percentButton;
+
+		for (int i = 0; i < 10; i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFocusable(false);
+			functionButtons[i].setFont(myFont);
+		}
+
+		for (int i = 0; i < 10; i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFocusable(false);
+			numberButtons[i].setBackground(Color.DARK_GRAY);
+			numberButtons[i].setForeground(Color.WHITE);
+			numberButtons[i].setFont(myFont);
+
+		}
+
+		panel = new JPanel();
+		panel.setBounds(40, 100, 300, 375);
+		panel.setLayout(new GridLayout(5, 4, 5, 5));
+		panel.setBackground(Color.BLACK);
+
+		panel.add(clearButton);
+		panel.add(posNegButton);
+		panel.add(percentButton);
+		panel.add(divButton);
+
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiButton);
+
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+
+		panel.add(numberButtons[0]);
+		panel.add(decimalButton);
+		panel.add(equalButton);
+
+		frame.add(panel);
+		frame.add(text);
+		frame.getContentPane().setBackground(Color.BLACK);
+
+		frame.setVisible(true);
+
+	}
+
+	public static void main(String[] args) {
+		Calculator calc = new Calculator();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < 10; i++) {
+			if (e.getSource() == numberButtons[i]) {
+				text.setText(text.getText().concat(String.valueOf(i)));
+			}
+		}
+		if (e.getSource() == clearButton) {
+			do(text.getText().length() > 0) {
+				clearButton.setFont(myFont);
+				clearButton.setText("C");
+				String expression = text.getText();
+				expression = expression.substring(0, expression.length() - 1);
+				text.setText(expression);
+				if (text.getText().length() <= 0){
+					Font allClear = new Font("", Font.BOLD, 25);
+					clearButton.setFont(allClear);
+					clearButton.setText("AC");
+					num1 = 0;
+				}
+			}
+			if (text.getText().length() <= 0){
+				Font allClear = new Font("", Font.BOLD, 25);
+				clearButton.setFont(allClear);
+				clearButton.setText("AC");
+				num1 = 0;
+			}
+
+		}
+
+		if (e.getSource() == divButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '/';
+			text.setText("");
+		}
+		if (e.getSource() == multiButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '*';
+			text.setText("");
+
+		}
+		if (e.getSource() == subtractButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '-';
+			text.setText("");
+
+		}
+		if (e.getSource() == addButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '+';
+			text.setText("");
+		}
+		if (e.getSource() == decimalButton) {
+			text.setText(text.getText().concat("."));
+		}
+		if (e.getSource() == equalButton) {
+			getResult();
+
+		}
+		if (e.getSource() == percentButton) {
+			double num = Double.parseDouble(text.getText());
+			num = num / 100;
+			text.setText("");
+			text.setText(text.getText().concat(String.valueOf(num)));
+		}
+		if (e.getSource() == posNegButton) {
+
+			double num = Double.parseDouble(String.valueOf(text.getText()));
+			num = num * (-1);
+			text.setText(String.valueOf(num));
+		}
+
+	}
+
+	public void getResult() {
+		num2 = Double.parseDouble(text.getText());
+
+		switch (operand) {
+
+		case '+':
+			result = num1 + num2;
+			break;
+		case '-':
+			result = num1 - num2;
+			break;
+
+		case '*':
+			result = num1 * num2;
+			break;
+
+		case '/':
+			if (num2 == 0)
+				throw new UnsupportedOperationException("Infinity");
+			result = num1 / num2;
+			break;
+		}
+		text.setText(String.valueOf(result));
+		num1 = result;
+
+	}
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 2 2022-02-21 17:41:51.971
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.core.manipulation".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 0 2022-02-21 17:41:51.971
+!MESSAGE Error in JDT Core during AST creation
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-21 17:41:52.411
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package application;
+
+import javax.swing.*;
+import javax.swing.text.AttributeSet.FontAttribute;
+
+import org.junit.platform.commons.util.StringUtils;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Calculator implements ActionListener {
+
+	JFrame frame;
+	JTextField text;
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[12];
+	JButton addButton, subtractButton, multiButton, divButton;
+	JButton clearButton, deleteButton, equalButton, decimalButton;
+	JButton posNegButton, percentButton;
+	JPanel panel;
+	Font myFont = new Font("", Font.BOLD, 30);
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+	char operand;
+
+	Calculator() {
+
+		// Frame init
+		frame = new JFrame("Calculator");
+		frame.setSize(400, 525);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+
+		// Setting up text area
+		text = new JTextField();
+		text.setBounds(40, 30, 300, 50);
+		text.setFont(myFont);
+		text.setEditable(false);
+
+		// Setting up buttons
+		addButton = new JButton("+");
+		addButton.setBackground(Color.ORANGE.darker());
+		addButton.setForeground(Color.WHITE);
+		subtractButton = new JButton("-");
+		subtractButton.setBackground(Color.ORANGE.darker());
+		subtractButton.setForeground(Color.WHITE);
+		multiButton = new JButton("*");
+		multiButton.setBackground(Color.ORANGE.darker());
+		multiButton.setForeground(Color.WHITE);
+		divButton = new JButton("/");
+		divButton.setBackground(Color.ORANGE.darker());
+		divButton.setForeground(Color.WHITE);
+		decimalButton = new JButton(".");
+		decimalButton.setBackground(Color.DARK_GRAY);
+		decimalButton.setForeground(Color.WHITE);
+		equalButton = new JButton("=");
+		equalButton.setBackground(Color.ORANGE.darker());
+		equalButton.setForeground(Color.WHITE);
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("C");
+		clearButton.setBackground(Color.LIGHT_GRAY);
+		posNegButton = new JButton("+/-");
+		posNegButton.setBackground(Color.LIGHT_GRAY);
+		percentButton = new JButton("%");
+		percentButton.setBackground(Color.LIGHT_GRAY);
+
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiButton;
+		functionButtons[3] = divButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = posNegButton;
+		functionButtons[9] = percentButton;
+
+		for (int i = 0; i < 10; i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFocusable(false);
+			functionButtons[i].setFont(myFont);
+		}
+
+		for (int i = 0; i < 10; i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFocusable(false);
+			numberButtons[i].setBackground(Color.DARK_GRAY);
+			numberButtons[i].setForeground(Color.WHITE);
+			numberButtons[i].setFont(myFont);
+
+		}
+
+		panel = new JPanel();
+		panel.setBounds(40, 100, 300, 375);
+		panel.setLayout(new GridLayout(5, 4, 5, 5));
+		panel.setBackground(Color.BLACK);
+
+		panel.add(clearButton);
+		panel.add(posNegButton);
+		panel.add(percentButton);
+		panel.add(divButton);
+
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiButton);
+
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+
+		panel.add(numberButtons[0]);
+		panel.add(decimalButton);
+		panel.add(equalButton);
+
+		frame.add(panel);
+		frame.add(text);
+		frame.getContentPane().setBackground(Color.BLACK);
+
+		frame.setVisible(true);
+
+	}
+
+	public static void main(String[] args) {
+		Calculator calc = new Calculator();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < 10; i++) {
+			if (e.getSource() == numberButtons[i]) {
+				text.setText(text.getText().concat(String.valueOf(i)));
+			}
+		}
+		if (e.getSource() == clearButton) {
+			do(text.getText().length() > 0) {
+				clearButton.setFont(myFont);
+				clearButton.setText("C");
+				String expression = text.getText();
+				expression = expression.substring(0, expression.length() - 1);
+				text.setText(expression);
+				if (text.getText().length() <= 0){
+					Font allClear = new Font("", Font.BOLD, 25);
+					clearButton.setFont(allClear);
+					clearButton.setText("AC");
+					num1 = 0;
+				}
+			}
+			if (text.getText().length() <= 0){
+				Font allClear = new Font("", Font.BOLD, 25);
+				clearButton.setFont(allClear);
+				clearButton.setText("AC");
+				num1 = 0;
+			}
+
+		}
+
+		if (e.getSource() == divButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '/';
+			text.setText("");
+		}
+		if (e.getSource() == multiButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '*';
+			text.setText("");
+
+		}
+		if (e.getSource() == subtractButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '-';
+			text.setText("");
+
+		}
+		if (e.getSource() == addButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '+';
+			text.setText("");
+		}
+		if (e.getSource() == decimalButton) {
+			text.setText(text.getText().concat("."));
+		}
+		if (e.getSource() == equalButton) {
+			getResult();
+
+		}
+		if (e.getSource() == percentButton) {
+			double num = Double.parseDouble(text.getText());
+			num = num / 100;
+			text.setText("");
+			text.setText(text.getText().concat(String.valueOf(num)));
+		}
+		if (e.getSource() == posNegButton) {
+
+			double num = Double.parseDouble(String.valueOf(text.getText()));
+			num = num * (-1);
+			text.setText(String.valueOf(num));
+		}
+
+	}
+
+	public void getResult() {
+		num2 = Double.parseDouble(text.getText());
+
+		switch (operand) {
+
+		case '+':
+			result = num1 + num2;
+			break;
+		case '-':
+			result = num1 - num2;
+			break;
+
+		case '*':
+			result = num1 * num2;
+			break;
+
+		case '/':
+			if (num2 == 0)
+				throw new UnsupportedOperationException("Infinity");
+			result = num1 / num2;
+			break;
+		}
+		text.setText(String.valueOf(result));
+		num1 = result;
+
+	}
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.text.java.hover.NLSStringHover.internalGetHoverInfo(NLSStringHover.java:139)
+	at org.eclipse.jdt.internal.ui.text.java.hover.NLSStringHover.getHoverInfo2(NLSStringHover.java:118)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:163)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 2 2022-02-21 17:41:52.425
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.core.manipulation".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.text.java.hover.NLSStringHover.internalGetHoverInfo(NLSStringHover.java:139)
+	at org.eclipse.jdt.internal.ui.text.java.hover.NLSStringHover.getHoverInfo2(NLSStringHover.java:118)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:163)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 0 2022-02-21 17:41:52.425
+!MESSAGE Error in JDT Core during AST creation
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.text.java.hover.NLSStringHover.internalGetHoverInfo(NLSStringHover.java:139)
+	at org.eclipse.jdt.internal.ui.text.java.hover.NLSStringHover.getHoverInfo2(NLSStringHover.java:118)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:163)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-21 17:41:52.433
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package application;
+
+import javax.swing.*;
+import javax.swing.text.AttributeSet.FontAttribute;
+
+import org.junit.platform.commons.util.StringUtils;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Calculator implements ActionListener {
+
+	JFrame frame;
+	JTextField text;
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[12];
+	JButton addButton, subtractButton, multiButton, divButton;
+	JButton clearButton, deleteButton, equalButton, decimalButton;
+	JButton posNegButton, percentButton;
+	JPanel panel;
+	Font myFont = new Font("", Font.BOLD, 30);
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+	char operand;
+
+	Calculator() {
+
+		// Frame init
+		frame = new JFrame("Calculator");
+		frame.setSize(400, 525);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+
+		// Setting up text area
+		text = new JTextField();
+		text.setBounds(40, 30, 300, 50);
+		text.setFont(myFont);
+		text.setEditable(false);
+
+		// Setting up buttons
+		addButton = new JButton("+");
+		addButton.setBackground(Color.ORANGE.darker());
+		addButton.setForeground(Color.WHITE);
+		subtractButton = new JButton("-");
+		subtractButton.setBackground(Color.ORANGE.darker());
+		subtractButton.setForeground(Color.WHITE);
+		multiButton = new JButton("*");
+		multiButton.setBackground(Color.ORANGE.darker());
+		multiButton.setForeground(Color.WHITE);
+		divButton = new JButton("/");
+		divButton.setBackground(Color.ORANGE.darker());
+		divButton.setForeground(Color.WHITE);
+		decimalButton = new JButton(".");
+		decimalButton.setBackground(Color.DARK_GRAY);
+		decimalButton.setForeground(Color.WHITE);
+		equalButton = new JButton("=");
+		equalButton.setBackground(Color.ORANGE.darker());
+		equalButton.setForeground(Color.WHITE);
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("C");
+		clearButton.setBackground(Color.LIGHT_GRAY);
+		posNegButton = new JButton("+/-");
+		posNegButton.setBackground(Color.LIGHT_GRAY);
+		percentButton = new JButton("%");
+		percentButton.setBackground(Color.LIGHT_GRAY);
+
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiButton;
+		functionButtons[3] = divButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = posNegButton;
+		functionButtons[9] = percentButton;
+
+		for (int i = 0; i < 10; i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFocusable(false);
+			functionButtons[i].setFont(myFont);
+		}
+
+		for (int i = 0; i < 10; i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFocusable(false);
+			numberButtons[i].setBackground(Color.DARK_GRAY);
+			numberButtons[i].setForeground(Color.WHITE);
+			numberButtons[i].setFont(myFont);
+
+		}
+
+		panel = new JPanel();
+		panel.setBounds(40, 100, 300, 375);
+		panel.setLayout(new GridLayout(5, 4, 5, 5));
+		panel.setBackground(Color.BLACK);
+
+		panel.add(clearButton);
+		panel.add(posNegButton);
+		panel.add(percentButton);
+		panel.add(divButton);
+
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiButton);
+
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+
+		panel.add(numberButtons[0]);
+		panel.add(decimalButton);
+		panel.add(equalButton);
+
+		frame.add(panel);
+		frame.add(text);
+		frame.getContentPane().setBackground(Color.BLACK);
+
+		frame.setVisible(true);
+
+	}
+
+	public static void main(String[] args) {
+		Calculator calc = new Calculator();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < 10; i++) {
+			if (e.getSource() == numberButtons[i]) {
+				text.setText(text.getText().concat(String.valueOf(i)));
+			}
+		}
+		if (e.getSource() == clearButton) {
+			do(text.getText().length() > 0) {
+				clearButton.setFont(myFont);
+				clearButton.setText("C");
+				String expression = text.getText();
+				expression = expression.substring(0, expression.length() - 1);
+				text.setText(expression);
+				if (text.getText().length() <= 0){
+					Font allClear = new Font("", Font.BOLD, 25);
+					clearButton.setFont(allClear);
+					clearButton.setText("AC");
+					num1 = 0;
+				}
+			}
+			if (text.getText().length() <= 0){
+				Font allClear = new Font("", Font.BOLD, 25);
+				clearButton.setFont(allClear);
+				clearButton.setText("AC");
+				num1 = 0;
+			}
+
+		}
+
+		if (e.getSource() == divButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '/';
+			text.setText("");
+		}
+		if (e.getSource() == multiButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '*';
+			text.setText("");
+
+		}
+		if (e.getSource() == subtractButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '-';
+			text.setText("");
+
+		}
+		if (e.getSource() == addButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '+';
+			text.setText("");
+		}
+		if (e.getSource() == decimalButton) {
+			text.setText(text.getText().concat("."));
+		}
+		if (e.getSource() == equalButton) {
+			getResult();
+
+		}
+		if (e.getSource() == percentButton) {
+			double num = Double.parseDouble(text.getText());
+			num = num / 100;
+			text.setText("");
+			text.setText(text.getText().concat(String.valueOf(num)));
+		}
+		if (e.getSource() == posNegButton) {
+
+			double num = Double.parseDouble(String.valueOf(text.getText()));
+			num = num * (-1);
+			text.setText(String.valueOf(num));
+		}
+
+	}
+
+	public void getResult() {
+		num2 = Double.parseDouble(text.getText());
+
+		switch (operand) {
+
+		case '+':
+			result = num1 + num2;
+			break;
+		case '-':
+			result = num1 - num2;
+			break;
+
+		case '*':
+			result = num1 * num2;
+			break;
+
+		case '/':
+			if (num2 == 0)
+				throw new UnsupportedOperationException("Infinity");
+			result = num1 / num2;
+			break;
+		}
+		text.setText(String.valueOf(result));
+		num1 = result;
+
+	}
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoveredASTNode(JavadocHover.java:1003)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getInfoText(JavadocHover.java:799)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoverInfo(JavadocHover.java:743)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.internalGetHoverInfo(JavadocHover.java:666)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoverInfo2(JavadocHover.java:658)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:163)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 2 2022-02-21 17:41:52.433
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.core.manipulation".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoveredASTNode(JavadocHover.java:1003)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getInfoText(JavadocHover.java:799)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoverInfo(JavadocHover.java:743)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.internalGetHoverInfo(JavadocHover.java:666)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoverInfo2(JavadocHover.java:658)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:163)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 0 2022-02-21 17:41:52.434
+!MESSAGE Error in JDT Core during AST creation
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoveredASTNode(JavadocHover.java:1003)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getInfoText(JavadocHover.java:799)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoverInfo(JavadocHover.java:743)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.internalGetHoverInfo(JavadocHover.java:666)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoverInfo2(JavadocHover.java:658)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:163)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-21 17:41:52.439
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package application;
+
+import javax.swing.*;
+import javax.swing.text.AttributeSet.FontAttribute;
+
+import org.junit.platform.commons.util.StringUtils;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Calculator implements ActionListener {
+
+	JFrame frame;
+	JTextField text;
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[12];
+	JButton addButton, subtractButton, multiButton, divButton;
+	JButton clearButton, deleteButton, equalButton, decimalButton;
+	JButton posNegButton, percentButton;
+	JPanel panel;
+	Font myFont = new Font("", Font.BOLD, 30);
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+	char operand;
+
+	Calculator() {
+
+		// Frame init
+		frame = new JFrame("Calculator");
+		frame.setSize(400, 525);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+
+		// Setting up text area
+		text = new JTextField();
+		text.setBounds(40, 30, 300, 50);
+		text.setFont(myFont);
+		text.setEditable(false);
+
+		// Setting up buttons
+		addButton = new JButton("+");
+		addButton.setBackground(Color.ORANGE.darker());
+		addButton.setForeground(Color.WHITE);
+		subtractButton = new JButton("-");
+		subtractButton.setBackground(Color.ORANGE.darker());
+		subtractButton.setForeground(Color.WHITE);
+		multiButton = new JButton("*");
+		multiButton.setBackground(Color.ORANGE.darker());
+		multiButton.setForeground(Color.WHITE);
+		divButton = new JButton("/");
+		divButton.setBackground(Color.ORANGE.darker());
+		divButton.setForeground(Color.WHITE);
+		decimalButton = new JButton(".");
+		decimalButton.setBackground(Color.DARK_GRAY);
+		decimalButton.setForeground(Color.WHITE);
+		equalButton = new JButton("=");
+		equalButton.setBackground(Color.ORANGE.darker());
+		equalButton.setForeground(Color.WHITE);
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("C");
+		clearButton.setBackground(Color.LIGHT_GRAY);
+		posNegButton = new JButton("+/-");
+		posNegButton.setBackground(Color.LIGHT_GRAY);
+		percentButton = new JButton("%");
+		percentButton.setBackground(Color.LIGHT_GRAY);
+
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiButton;
+		functionButtons[3] = divButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = posNegButton;
+		functionButtons[9] = percentButton;
+
+		for (int i = 0; i < 10; i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFocusable(false);
+			functionButtons[i].setFont(myFont);
+		}
+
+		for (int i = 0; i < 10; i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFocusable(false);
+			numberButtons[i].setBackground(Color.DARK_GRAY);
+			numberButtons[i].setForeground(Color.WHITE);
+			numberButtons[i].setFont(myFont);
+
+		}
+
+		panel = new JPanel();
+		panel.setBounds(40, 100, 300, 375);
+		panel.setLayout(new GridLayout(5, 4, 5, 5));
+		panel.setBackground(Color.BLACK);
+
+		panel.add(clearButton);
+		panel.add(posNegButton);
+		panel.add(percentButton);
+		panel.add(divButton);
+
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiButton);
+
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+
+		panel.add(numberButtons[0]);
+		panel.add(decimalButton);
+		panel.add(equalButton);
+
+		frame.add(panel);
+		frame.add(text);
+		frame.getContentPane().setBackground(Color.BLACK);
+
+		frame.setVisible(true);
+
+	}
+
+	public static void main(String[] args) {
+		Calculator calc = new Calculator();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < 10; i++) {
+			if (e.getSource() == numberButtons[i]) {
+				text.setText(text.getText().concat(String.valueOf(i)));
+			}
+		}
+		if (e.getSource() == clearButton) {
+			do(text.getText().length() > 0) {
+				clearButton.setFont(myFont);
+				clearButton.setText("C");
+				String expression = text.getText();
+				expression = expression.substring(0, expression.length() - 1);
+				text.setText(expression);
+				if (text.getText().length() <= 0){
+					Font allClear = new Font("", Font.BOLD, 25);
+					clearButton.setFont(allClear);
+					clearButton.setText("AC");
+					num1 = 0;
+				}
+			}
+			if (text.getText().length() <= 0){
+				Font allClear = new Font("", Font.BOLD, 25);
+				clearButton.setFont(allClear);
+				clearButton.setText("AC");
+				num1 = 0;
+			}
+
+		}
+
+		if (e.getSource() == divButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '/';
+			text.setText("");
+		}
+		if (e.getSource() == multiButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '*';
+			text.setText("");
+
+		}
+		if (e.getSource() == subtractButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '-';
+			text.setText("");
+
+		}
+		if (e.getSource() == addButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '+';
+			text.setText("");
+		}
+		if (e.getSource() == decimalButton) {
+			text.setText(text.getText().concat("."));
+		}
+		if (e.getSource() == equalButton) {
+			getResult();
+
+		}
+		if (e.getSource() == percentButton) {
+			double num = Double.parseDouble(text.getText());
+			num = num / 100;
+			text.setText("");
+			text.setText(text.getText().concat(String.valueOf(num)));
+		}
+		if (e.getSource() == posNegButton) {
+
+			double num = Double.parseDouble(String.valueOf(text.getText()));
+			num = num * (-1);
+			text.setText(String.valueOf(num));
+		}
+
+	}
+
+	public void getResult() {
+		num2 = Double.parseDouble(text.getText());
+
+		switch (operand) {
+
+		case '+':
+			result = num1 + num2;
+			break;
+		case '-':
+			result = num1 - num2;
+			break;
+
+		case '*':
+			result = num1 * num2;
+			break;
+
+		case '/':
+			if (num2 == 0)
+				throw new UnsupportedOperationException("Infinity");
+			result = num1 / num2;
+			break;
+		}
+		text.setText(String.valueOf(result));
+		num1 = result;
+
+	}
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoveredASTNode(JavadocHover.java:1003)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoveredNodeBinding(JavadocHover.java:882)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getAnnotations(JavadocHover.java:1173)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.addAnnotations(JavadocHover.java:1137)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoverInfo(JavadocHover.java:745)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.internalGetHoverInfo(JavadocHover.java:666)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoverInfo2(JavadocHover.java:658)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:163)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 2 2022-02-21 17:41:52.439
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.core.manipulation".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoveredASTNode(JavadocHover.java:1003)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoveredNodeBinding(JavadocHover.java:882)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getAnnotations(JavadocHover.java:1173)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.addAnnotations(JavadocHover.java:1137)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoverInfo(JavadocHover.java:745)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.internalGetHoverInfo(JavadocHover.java:666)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoverInfo2(JavadocHover.java:658)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:163)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 0 2022-02-21 17:41:52.440
+!MESSAGE Error in JDT Core during AST creation
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoveredASTNode(JavadocHover.java:1003)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoveredNodeBinding(JavadocHover.java:882)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getAnnotations(JavadocHover.java:1173)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.addAnnotations(JavadocHover.java:1137)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoverInfo(JavadocHover.java:745)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.internalGetHoverInfo(JavadocHover.java:666)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavadocHover.getHoverInfo2(JavadocHover.java:658)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:163)
+	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:130)
+	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-21 17:41:52.961
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package application;
+
+import javax.swing.*;
+import javax.swing.text.AttributeSet.FontAttribute;
+
+import org.junit.platform.commons.util.StringUtils;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Calculator implements ActionListener {
+
+	JFrame frame;
+	JTextField text;
+	JButton[] numberButtons = new JButton[10];
+	JButton[] functionButtons = new JButton[12];
+	JButton addButton, subtractButton, multiButton, divButton;
+	JButton clearButton, deleteButton, equalButton, decimalButton;
+	JButton posNegButton, percentButton;
+	JPanel panel;
+	Font myFont = new Font("", Font.BOLD, 30);
+	double num1 = 0;
+	double num2 = 0;
+	double result = 0;
+	char operand;
+
+	Calculator() {
+
+		// Frame init
+		frame = new JFrame("Calculator");
+		frame.setSize(400, 525);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+
+		// Setting up text area
+		text = new JTextField();
+		text.setBounds(40, 30, 300, 50);
+		text.setFont(myFont);
+		text.setEditable(false);
+
+		// Setting up buttons
+		addButton = new JButton("+");
+		addButton.setBackground(Color.ORANGE.darker());
+		addButton.setForeground(Color.WHITE);
+		subtractButton = new JButton("-");
+		subtractButton.setBackground(Color.ORANGE.darker());
+		subtractButton.setForeground(Color.WHITE);
+		multiButton = new JButton("*");
+		multiButton.setBackground(Color.ORANGE.darker());
+		multiButton.setForeground(Color.WHITE);
+		divButton = new JButton("/");
+		divButton.setBackground(Color.ORANGE.darker());
+		divButton.setForeground(Color.WHITE);
+		decimalButton = new JButton(".");
+		decimalButton.setBackground(Color.DARK_GRAY);
+		decimalButton.setForeground(Color.WHITE);
+		equalButton = new JButton("=");
+		equalButton.setBackground(Color.ORANGE.darker());
+		equalButton.setForeground(Color.WHITE);
+		deleteButton = new JButton("Del");
+		clearButton = new JButton("C");
+		clearButton.setBackground(Color.LIGHT_GRAY);
+		posNegButton = new JButton("+/-");
+		posNegButton.setBackground(Color.LIGHT_GRAY);
+		percentButton = new JButton("%");
+		percentButton.setBackground(Color.LIGHT_GRAY);
+
+		functionButtons[0] = addButton;
+		functionButtons[1] = subtractButton;
+		functionButtons[2] = multiButton;
+		functionButtons[3] = divButton;
+		functionButtons[4] = decimalButton;
+		functionButtons[5] = equalButton;
+		functionButtons[6] = deleteButton;
+		functionButtons[7] = clearButton;
+		functionButtons[8] = posNegButton;
+		functionButtons[9] = percentButton;
+
+		for (int i = 0; i < 10; i++) {
+			functionButtons[i].addActionListener(this);
+			functionButtons[i].setFocusable(false);
+			functionButtons[i].setFont(myFont);
+		}
+
+		for (int i = 0; i < 10; i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			numberButtons[i].addActionListener(this);
+			numberButtons[i].setFocusable(false);
+			numberButtons[i].setBackground(Color.DARK_GRAY);
+			numberButtons[i].setForeground(Color.WHITE);
+			numberButtons[i].setFont(myFont);
+
+		}
+
+		panel = new JPanel();
+		panel.setBounds(40, 100, 300, 375);
+		panel.setLayout(new GridLayout(5, 4, 5, 5));
+		panel.setBackground(Color.BLACK);
+
+		panel.add(clearButton);
+		panel.add(posNegButton);
+		panel.add(percentButton);
+		panel.add(divButton);
+
+		panel.add(numberButtons[7]);
+		panel.add(numberButtons[8]);
+		panel.add(numberButtons[9]);
+		panel.add(multiButton);
+
+		panel.add(numberButtons[4]);
+		panel.add(numberButtons[5]);
+		panel.add(numberButtons[6]);
+		panel.add(subtractButton);
+
+		panel.add(numberButtons[1]);
+		panel.add(numberButtons[2]);
+		panel.add(numberButtons[3]);
+		panel.add(addButton);
+
+		panel.add(numberButtons[0]);
+		panel.add(decimalButton);
+		panel.add(equalButton);
+
+		frame.add(panel);
+		frame.add(text);
+		frame.getContentPane().setBackground(Color.BLACK);
+
+		frame.setVisible(true);
+
+	}
+
+	public static void main(String[] args) {
+		Calculator calc = new Calculator();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < 10; i++) {
+			if (e.getSource() == numberButtons[i]) {
+				text.setText(text.getText().concat(String.valueOf(i)));
+			}
+		}
+		if (e.getSource() == clearButton) {
+			do(text.getText().length() > 0) {
+				clearButton.setFont(myFont);
+				clearButton.setText("C");
+				String expression = text.getText();
+				expression = expression.substring(0, expression.length() - 1);
+				text.setText(expression);
+				if (text.getText().length() <= 0){
+					Font allClear = new Font("", Font.BOLD, 25);
+					clearButton.setFont(allClear);
+					clearButton.setText("AC");
+					num1 = 0;
+				}
+			}
+			if (text.getText().length() <= 0){
+				Font allClear = new Font("", Font.BOLD, 25);
+				clearButton.setFont(allClear);
+				clearButton.setText("AC");
+				num1 = 0;
+			}
+
+		}
+
+		if (e.getSource() == divButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '/';
+			text.setText("");
+		}
+		if (e.getSource() == multiButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '*';
+			text.setText("");
+
+		}
+		if (e.getSource() == subtractButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '-';
+			text.setText("");
+
+		}
+		if (e.getSource() == addButton) {
+			num1 = Double.parseDouble(text.getText());
+			operand = '+';
+			text.setText("");
+		}
+		if (e.getSource() == decimalButton) {
+			text.setText(text.getText().concat("."));
+		}
+		if (e.getSource() == equalButton) {
+			getResult();
+
+		}
+		if (e.getSource() == percentButton) {
+			double num = Double.parseDouble(text.getText());
+			num = num / 100;
+			text.setText("");
+			text.setText(text.getText().concat(String.valueOf(num)));
+		}
+		if (e.getSource() == posNegButton) {
+
+			double num = Double.parseDouble(String.valueOf(text.getText()));
+			num = num * (-1);
+			text.setText(String.valueOf(num));
+		}
+
+	}
+
+	public void getResult() {
+		num2 = Double.parseDouble(text.getText());
+
+		switch (operand) {
+
+		case '+':
+			result = num1 + num2;
+			break;
+		case '-':
+			result = num1 - num2;
+			break;
+
+		case '*':
+			result = num1 * num2;
+			break;
+
+		case '/':
+			if (num2 == 0)
+				throw new UnsupportedOperationException("Infinity");
+			result = num1 / num2;
+			break;
+		}
+		text.setText(String.valueOf(result));
+		num1 = result;
+
+	}
+
+}
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.javaeditor.ClipboardOperationAction.getClipboardData(ClipboardOperationAction.java:479)
+	at org.eclipse.jdt.internal.ui.javaeditor.ClipboardOperationAction.doCutCopyWithImportsOperation(ClipboardOperationAction.java:406)
+	at org.eclipse.jdt.internal.ui.javaeditor.ClipboardOperationAction.internalDoOperation(ClipboardOperationAction.java:365)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:74)
+	at org.eclipse.jdt.internal.ui.javaeditor.ClipboardOperationAction.run(ClipboardOperationAction.java:286)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:474)
+	at org.eclipse.jface.commands.ActionHandler.execute(ActionHandler.java:121)
+	at org.eclipse.ui.internal.handlers.E4HandlerProxy.execute(E4HandlerProxy.java:97)
+	at jdk.internal.reflect.GeneratedMethodAccessor55.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.eclipse.e4.core.internal.di.MethodRequestor.execute(MethodRequestor.java:58)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invokeUsingClass(InjectorImpl.java:317)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invoke(InjectorImpl.java:251)
+	at org.eclipse.e4.core.contexts.ContextInjectionFactory.invoke(ContextInjectionFactory.java:173)
+	at org.eclipse.e4.core.commands.internal.HandlerServiceHandler.execute(HandlerServiceHandler.java:156)
+	at org.eclipse.core.commands.Command.executeWithChecks(Command.java:488)
+	at org.eclipse.core.commands.ParameterizedCommand.executeWithChecks(ParameterizedCommand.java:487)
+	at org.eclipse.e4.core.commands.internal.HandlerServiceImpl.executeHandler(HandlerServiceImpl.java:213)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.executeCommand(KeyBindingDispatcher.java:308)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.press(KeyBindingDispatcher.java:580)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.processKeyEvent(KeyBindingDispatcher.java:647)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.filterKeySequenceBindings(KeyBindingDispatcher.java:439)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher$KeyDownFilter.handleEvent(KeyBindingDispatcher.java:96)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:89)
+	at org.eclipse.swt.widgets.Display.filterEvent(Display.java:1270)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1059)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1084)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1069)
+	at org.eclipse.swt.widgets.Widget.sendKeyEvent(Widget.java:1111)
+	at org.eclipse.swt.widgets.Widget.sendKeyEvent(Widget.java:1107)
+	at org.eclipse.swt.widgets.Widget.wmChar(Widget.java:1536)
+	at org.eclipse.swt.widgets.Control.WM_CHAR(Control.java:4875)
+	at org.eclipse.swt.widgets.Canvas.WM_CHAR(Canvas.java:345)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4753)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:340)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4958)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(Native Method)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3624)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1150)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1041)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:644)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:551)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:156)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:152)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:136)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:596)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1467)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1440)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 2 2022-02-21 17:41:52.962
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.core.manipulation".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.javaeditor.ClipboardOperationAction.getClipboardData(ClipboardOperationAction.java:479)
+	at org.eclipse.jdt.internal.ui.javaeditor.ClipboardOperationAction.doCutCopyWithImportsOperation(ClipboardOperationAction.java:406)
+	at org.eclipse.jdt.internal.ui.javaeditor.ClipboardOperationAction.internalDoOperation(ClipboardOperationAction.java:365)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:74)
+	at org.eclipse.jdt.internal.ui.javaeditor.ClipboardOperationAction.run(ClipboardOperationAction.java:286)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:474)
+	at org.eclipse.jface.commands.ActionHandler.execute(ActionHandler.java:121)
+	at org.eclipse.ui.internal.handlers.E4HandlerProxy.execute(E4HandlerProxy.java:97)
+	at jdk.internal.reflect.GeneratedMethodAccessor55.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.eclipse.e4.core.internal.di.MethodRequestor.execute(MethodRequestor.java:58)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invokeUsingClass(InjectorImpl.java:317)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invoke(InjectorImpl.java:251)
+	at org.eclipse.e4.core.contexts.ContextInjectionFactory.invoke(ContextInjectionFactory.java:173)
+	at org.eclipse.e4.core.commands.internal.HandlerServiceHandler.execute(HandlerServiceHandler.java:156)
+	at org.eclipse.core.commands.Command.executeWithChecks(Command.java:488)
+	at org.eclipse.core.commands.ParameterizedCommand.executeWithChecks(ParameterizedCommand.java:487)
+	at org.eclipse.e4.core.commands.internal.HandlerServiceImpl.executeHandler(HandlerServiceImpl.java:213)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.executeCommand(KeyBindingDispatcher.java:308)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.press(KeyBindingDispatcher.java:580)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.processKeyEvent(KeyBindingDispatcher.java:647)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.filterKeySequenceBindings(KeyBindingDispatcher.java:439)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher$KeyDownFilter.handleEvent(KeyBindingDispatcher.java:96)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:89)
+	at org.eclipse.swt.widgets.Display.filterEvent(Display.java:1270)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1059)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1084)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1069)
+	at org.eclipse.swt.widgets.Widget.sendKeyEvent(Widget.java:1111)
+	at org.eclipse.swt.widgets.Widget.sendKeyEvent(Widget.java:1107)
+	at org.eclipse.swt.widgets.Widget.wmChar(Widget.java:1536)
+	at org.eclipse.swt.widgets.Control.WM_CHAR(Control.java:4875)
+	at org.eclipse.swt.widgets.Canvas.WM_CHAR(Canvas.java:345)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4753)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:340)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4958)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(Native Method)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3624)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1150)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1041)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:644)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:551)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:156)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:152)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:136)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:596)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1467)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1440)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 0 2022-02-21 17:41:52.962
+!MESSAGE Error in JDT Core during AST creation
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1752)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2984)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.javaeditor.ClipboardOperationAction.getClipboardData(ClipboardOperationAction.java:479)
+	at org.eclipse.jdt.internal.ui.javaeditor.ClipboardOperationAction.doCutCopyWithImportsOperation(ClipboardOperationAction.java:406)
+	at org.eclipse.jdt.internal.ui.javaeditor.ClipboardOperationAction.internalDoOperation(ClipboardOperationAction.java:365)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:74)
+	at org.eclipse.jdt.internal.ui.javaeditor.ClipboardOperationAction.run(ClipboardOperationAction.java:286)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:474)
+	at org.eclipse.jface.commands.ActionHandler.execute(ActionHandler.java:121)
+	at org.eclipse.ui.internal.handlers.E4HandlerProxy.execute(E4HandlerProxy.java:97)
+	at jdk.internal.reflect.GeneratedMethodAccessor55.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.eclipse.e4.core.internal.di.MethodRequestor.execute(MethodRequestor.java:58)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invokeUsingClass(InjectorImpl.java:317)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.invoke(InjectorImpl.java:251)
+	at org.eclipse.e4.core.contexts.ContextInjectionFactory.invoke(ContextInjectionFactory.java:173)
+	at org.eclipse.e4.core.commands.internal.HandlerServiceHandler.execute(HandlerServiceHandler.java:156)
+	at org.eclipse.core.commands.Command.executeWithChecks(Command.java:488)
+	at org.eclipse.core.commands.ParameterizedCommand.executeWithChecks(ParameterizedCommand.java:487)
+	at org.eclipse.e4.core.commands.internal.HandlerServiceImpl.executeHandler(HandlerServiceImpl.java:213)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.executeCommand(KeyBindingDispatcher.java:308)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.press(KeyBindingDispatcher.java:580)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.processKeyEvent(KeyBindingDispatcher.java:647)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher.filterKeySequenceBindings(KeyBindingDispatcher.java:439)
+	at org.eclipse.e4.ui.bindings.keys.KeyBindingDispatcher$KeyDownFilter.handleEvent(KeyBindingDispatcher.java:96)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:89)
+	at org.eclipse.swt.widgets.Display.filterEvent(Display.java:1270)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1059)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1084)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1069)
+	at org.eclipse.swt.widgets.Widget.sendKeyEvent(Widget.java:1111)
+	at org.eclipse.swt.widgets.Widget.sendKeyEvent(Widget.java:1107)
+	at org.eclipse.swt.widgets.Widget.wmChar(Widget.java:1536)
+	at org.eclipse.swt.widgets.Control.WM_CHAR(Control.java:4875)
+	at org.eclipse.swt.widgets.Canvas.WM_CHAR(Canvas.java:345)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4753)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:340)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4958)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(Native Method)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3624)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1150)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1041)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:644)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:551)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:156)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:152)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:136)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:401)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:596)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1467)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1440)

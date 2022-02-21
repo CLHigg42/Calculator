@@ -1,6 +1,9 @@
 package application;
 
 import javax.swing.*;
+
+import org.junit.platform.commons.util.StringUtils;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -19,9 +22,8 @@ public class Calculator implements ActionListener {
 	JPanel panel;
 	Font myFont = new Font("", Font.BOLD, 30);
 
-	double num1 = 0;
-	double num2 = 0;
-	char operand;
+	
+	
 
 	Calculator() {
 
@@ -144,28 +146,55 @@ public class Calculator implements ActionListener {
 			}
 		}
 		if (e.getSource() == clearButton) {
-			text.setText("");
+			String expression = text.getText();
+			expression = expression.substring(0,expression.length()-1);
+			text.setText(expression);
+			
 		}
 
 		if (e.getSource() == divButton) {
 
-			text.setText(text.getText().concat(" / "));
+			if (operatorCheck() == true) {
+				System.out.println("here");
+				text.setText(text.getText().concat(""));
+
+			} else {
+				text.setText(text.getText().concat("/"));
+			}
 		}
 		if (e.getSource() == multiButton) {
+			if (operatorCheck() == true) {
+				System.out.println("here");
+				text.setText(text.getText().concat(""));
 
-			text.setText(text.getText().concat(" * "));
+			} else {
+			text.setText(text.getText().concat("*"));
+			}
 
 		}
 		if (e.getSource() == subtractButton) {
+			if (operatorCheck() == true) {
+				System.out.println("here");
+				text.setText(text.getText().concat(""));
 
-			text.setText(text.getText().concat(" - "));
+			} else {
+			text.setText(text.getText().concat("-"));
+			}
 
 		}
 		if (e.getSource() == addButton) {
+			if (operatorCheck() == true) {
+				System.out.println("here");
+				text.setText(text.getText().concat(""));
 
-			text.setText(text.getText().concat(" + "));
+			} else {
+			text.setText(text.getText().concat("+"));
+			}
 		}
 		if (e.getSource() == equalButton) {
+			if(text.getText().length() == 0) {
+				text.setText("0");
+			}
 			text.setText(String.valueOf(Consume_String.evaluate(text.getText())));
 
 		}
@@ -175,6 +204,38 @@ public class Calculator implements ActionListener {
 			text.setText("");
 			text.setText(text.getText().concat(String.valueOf(num)));
 		}
+		if (e.getSource()==posNegButton){
+			String num;
+			String expression = text.getText();
+			num = expression.substring(expression.length()-1);
+			
+			
+			
+			
+		}
+		
+			
+			
+			
+	}
+
+	
+
+	public String removeLastChar(String s) {
+		return (s == null) ? null : s.replaceAll(".$", "");
+	}
+
+	public boolean operatorCheck() {
+		String expression = text.getText();
+		System.out.println(expression.substring(expression.length() - 1));
+		String op = expression.substring(expression.length() - 1);
+
+		try {
+			Double.parseDouble(op);
+		} catch (NumberFormatException e) {
+			return true;
+		}
+		return false;
 
 	}
 

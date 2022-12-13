@@ -12,10 +12,13 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Users\Casey\Desktop\repo"/>
 			<item value="C:\Users\CLHig\Desktop\repo\Calculator"/>
 			<item value="C:\Users\CLHig\Desktop\repo"/>
 		</list>
 	</section>
 	<section name="NewWizardAction">
+	</section>
+	<section name="org.eclipse.ui.internal.views.markers.FiltersConfigurationDialog">
 	</section>
 </section>

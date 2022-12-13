@@ -1,5 +1,9 @@
 package application;
+
 import javax.swing.*;
+import java.io.*;
+import java.net.*;
+import javax.swing.SpringLayout.Constraints;
 import javax.swing.border.LineBorder;
 
 import java.awt.*;
@@ -20,6 +24,7 @@ public class Calculator implements ActionListener {
 	double num2 = 0;
 	double result = 0;
 	char operand;
+	Socket client = null;
 
 	Calculator() {
 
@@ -36,7 +41,7 @@ public class Calculator implements ActionListener {
 		text.setEditable(false);
 		text.setBackground(Color.BLACK);
 		text.setForeground(Color.WHITE);
-		text.setBorder( new LineBorder(Color.BLACK));
+		text.setBorder(new LineBorder(Color.BLACK));
 		text.setHorizontalAlignment(SwingConstants.RIGHT);
 
 		// Setting up buttons
@@ -132,60 +137,85 @@ public class Calculator implements ActionListener {
 
 	public static void main(String[] args) {
 		Calculator calc = new Calculator();
+		try {
+			Server.startServer();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		for (int i = 0; i < 10; i++) {
-			if (e.getSource() == numberButtons[i]) {
+
+			if (e.getSource() == numberButtons[i] && text.getText() == String.valueOf(result)) {
+				text.setText("");
+
+			}
+
+			else if (e.getSource() == numberButtons[i]) {
 				text.setText(text.getText().concat(String.valueOf(i)));
 			}
 		}
-		if (e.getSource() == clearButton) {
+
+		if (e.getSource() == numberButtons[0] && Double.parseDouble(String.valueOf(text.getText())) == 0) {
+			text.setText("0");
+		} else if (e.getSource() == clearButton) {
+			text.setText("");
+
 			if (text.getText().length() > 0) {
 				String expression = text.getText();
 				expression = expression.substring(0, expression.length() - 1);
 				text.setText(expression);
 			}
+				else
+					num1 = 0;
+			}
 
-		}
+		
 
-		if (e.getSource() == divButton) {
+		else if (e.getSource() == divButton) {
 			num1 = Double.parseDouble(text.getText());
 			operand = '/';
 			text.setText("");
-		}
-		if (e.getSource() == multiButton) {
+		} else if (e.getSource() == multiButton) {
 			num1 = Double.parseDouble(text.getText());
 			operand = '*';
 			text.setText("");
 
-		}
-		if (e.getSource() == subtractButton) {
-			num1 = Double.parseDouble(text.getText());
-			operand = '-';
-			text.setText("");
+		} else if (e.getSource() == subtractButton) {
 
-		}
-		if (e.getSource() == addButton) {
+			if (num1 == 0)
+				text.setText("-");
+			num1 = Double.parseDouble(text.getText());
+
+			if (num1 > 0 || num1 < 0) {
+				num1 = Double.parseDouble(text.getText());
+				operand = '-';
+				text.setText("");
+			}
+
+		} else if (e.getSource() == addButton) {
 			num1 = Double.parseDouble(text.getText());
 			operand = '+';
 			text.setText("");
-		}
-		if (e.getSource() == decimalButton) {
+		} else if (e.getSource() == decimalButton) {
 			text.setText(text.getText().concat("."));
-		}
-		if (e.getSource() == equalButton) {
-			getResult();
+		} else if (e.getSource() == equalButton) {
+			num2 = Double.parseDouble(text.getText());
+			try {
+				getResult();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 
-		}
-		if (e.getSource() == percentButton) {
+		} else if (e.getSource() == percentButton) {
 			double num = Double.parseDouble(text.getText());
 			num = num / 100;
 			text.setText("");
 			text.setText(text.getText().concat(String.valueOf(num)));
-		}
-		if (e.getSource() == posNegButton) {
+		} else if (e.getSource() == posNegButton) {
 
 			double num = Double.parseDouble(String.valueOf(text.getText()));
 			num = num * (-1);
@@ -194,30 +224,29 @@ public class Calculator implements ActionListener {
 
 	}
 
-	public void getResult() {
-		num2 = Double.parseDouble(text.getText());
+	public void getResult() throws IOException {
 
-		switch (operand) {
-
-		case '+':
-			result = num1 + num2;
-			break;
-		case '-':
-			result = num1 - num2;
-			break;
-
-		case '*':
-			result = num1 * num2;
-			break;
-
-		case '/':
-			if (num2 == 0)
-				throw new UnsupportedOperationException("Infinity");
-			result = num1 / num2;
-			break;
+		if (client == null) {
+			System.out.println("create client socket");
+			client = new Socket("localHost", 4999);
 		}
-		text.setText(String.valueOf(result));
-		num1 = result;
+
+		DataInputStream input = new DataInputStream(client.getInputStream());
+		DataOutputStream output = new DataOutputStream(client.getOutputStream());
+		System.out.println("Init variables");
+
+		output.writeDouble(num1);
+		output.flush();
+
+		output.writeDouble(num2);
+		output.flush();
+
+		output.writeChar(operand);
+		output.flush();
+
+		System.out.println("Flushed all variables");
+		num1 = input.readDouble();
+		text.setText(String.valueOf(num1));
 
 	}
 

@@ -3,4 +3,9 @@
     <fullyQualifiedTypeName name="org.junit.platform.commons.util.StringUtils"/>
     <fullyQualifiedTypeName name="javax.swing.text.AttributeSet.FontAttribute"/>
     <fullyQualifiedTypeName name="javax.swing.border.LineBorder"/>
+    <fullyQualifiedTypeName name="javax.swing.JFrame"/>
+    <fullyQualifiedTypeName name="javax.swing.JPanel"/>
+    <fullyQualifiedTypeName name="javax.swing.WindowConstants"/>
+    <fullyQualifiedTypeName name="javax.swing.JButton"/>
+    <fullyQualifiedTypeName name="javax.swing.JTextField"/>
 </qualifiedTypeNameHistroy>

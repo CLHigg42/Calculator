@@ -77,6 +77,7 @@ public class Server {
 /*
  * TO-DO:
  * 
+ * fix issue with subtraction and negative numbers through keyboard
  * Delete all console outputs that are not needed 
  * finished for now :)
  * 

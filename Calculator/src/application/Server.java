@@ -2,6 +2,7 @@ package application;
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 public class Server {
 
@@ -75,11 +76,7 @@ public class Server {
 /*
  * TO-DO:
  * 
- *  add number formatting to make look pretty
- * 
- * give calculator ability to resize in window or make window non modifiable
- * 
- * re-implement keyboard functionality after UI functionality is functional
+ 
  * 
  * Delete all console outputs that are not needed 
  * 

@@ -61,8 +61,6 @@ public class Server {
 			result = num1 * num2;
 			break;
 		case '/':
-			if (num2 == 0)
-				throw new UnsupportedOperationException("Infinity");
 			result = num1 / num2;
 			break;
 		}
@@ -77,8 +75,16 @@ public class Server {
 /*
  * TO-DO:
  * 
- * fix issue with subtraction and negative numbers through keyboard
+ *  add number formatting to make look pretty
+ * 
+ * give calculator ability to resize in window or make window non modifiable
+ * 
+ * re-implement keyboard functionality after UI functionality is functional
+ * 
  * Delete all console outputs that are not needed 
+ * 
+ * COMMENT CODE!!!!
+ * 
  * finished for now :)
  * 
  *

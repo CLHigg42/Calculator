@@ -40,6 +40,8 @@ public class Calculator implements ActionListener {
 		text.setForeground(Color.WHITE);
 		text.setBorder(new LineBorder(Color.BLACK));
 		text.setHorizontalAlignment(SwingConstants.RIGHT);
+		text.setEditable(false);
+		text.setText("0");
 
 		// Setting up buttons
 		addButton = new JButton("+");
@@ -130,88 +132,6 @@ public class Calculator implements ActionListener {
 
 		frame.setVisible(true);
 
-		text.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent ke) {
-
-				if (ke.getKeyCode() == KeyEvent.VK_MINUS) {
-					
-					if (num1 == 0) {
-						System.out.println(num1);
-						System.out.println("poo");
-						num1 = Double.parseDouble(text.getText());
-						text.setText(" ");
-						operand = '-';
-					} else if(num1 < 0 || num1 > 0) {
-						System.out.println("pee");
-							operand = '-';
-							text.setText(" ");
-					}
-
-				}
-
-				if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
-					num2 = Double.parseDouble(text.getText());
-					try {
-						getResult();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-
-				}
-
-				if (ke.getKeyChar() >= '0' && ke.getKeyChar() <= '9') {
-					
-					if(text.getText().contains("+") || text.getText().contains("*")|| text.getText().contains("/"))
-						text.setText(" ");
-					if(text.getText().charAt(0) == '0')
-						text.setText(" ");
-
-					text.setEditable(true);
-
-					if (text.getText().contains("-") == true && (num1 > 0 || num1 < 0)) {
-						text.setText(" ");
-					}
-
-				} else if (ke.getKeyChar() == '+' || ke.getKeyChar() == '-' || ke.getKeyChar() == '*'
-						|| ke.getKeyChar() == '/' || ke.getKeyChar() == '.') {
-
-					switch (ke.getKeyChar()) {
-
-					case '+':
-						num1 = Double.parseDouble(text.getText());
-						operand = '+';
-						text.setText("+");
-						break;
-
-					case '*':
-						num1 = Double.parseDouble(text.getText());
-						operand = '*';
-						text.setText("*");
-						break;
-					case '/':
-						num1 = Double.parseDouble(text.getText());
-						operand = '/';
-						text.setText("/");
-						break;
-					case '.':
-
-						if (text.getText().contains(".") == true) {
-
-							text.setEditable(false);
-						} else
-							text.setEditable(true);
-
-						break;
-
-					}
-
-				} else
-					text.setEditable(false);
-
-			}
-
-		});
-
 	}
 
 	public static void main(String[] args) {
@@ -221,6 +141,7 @@ public class Calculator implements ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	@Override
@@ -228,24 +149,50 @@ public class Calculator implements ActionListener {
 
 		for (int i = 0; i < 10; i++) {
 
-			if (e.getSource() == numberButtons[i] && text.getText() == String.valueOf(result)) {
-
-			}
-
-			else if (e.getSource() == numberButtons[i]) {
+			if (text.getText().contains("+") == true || text.getText().contains("*") == true
+					|| text.getText().contains("/") == true) {
 				text.setText(" ");
-				text.setText(text.getText().concat(String.valueOf(i)));
 
 			}
+
+			if (e.getSource() == numberButtons[i]) {
+
+				if (text.getText().contains("-") == false && text.getText().charAt(0) == '0' ) {
+					System.out.println("here");
+					if(text.getText().contains(".") == true)
+						text.setText(text.getText().concat(String.valueOf(i)));
+					else {
+					text.setText(" ");
+					text.setText(text.getText().concat(String.valueOf(i)));
+					}
+				}
+
+				else if (num1 != 0 && e.getSource() == numberButtons[i] && text.getText().contains("-") == true) {
+					System.out.println("want to be here");
+					text.setText(" ");
+					text.setText(text.getText().concat(String.valueOf(i)));
+
+				} else if (text.getText().charAt(0) == '0' && num1 >= 0) {
+					System.out.println("but are we here?");
+					text.setText(" ");
+					text.setText(text.getText().concat(String.valueOf(i)));
+
+				} else if (text.getText().contains("-") == true && num1 == 0) {
+					text.setText(text.getText().concat(String.valueOf(i)));
+				} else {
+					System.out.println("bleh");
+					text.setText(text.getText().concat(String.valueOf(i)));
+				}
+
+			}
+
 		}
 
 		if (e.getSource() == numberButtons[0] && Double.parseDouble(String.valueOf(text.getText())) == 0) {
 			text.setText("0");
 		} else if (e.getSource() == clearButton) {
 			text.setText("0");
-
-			
-				num1 = 0;
+			num1 = 0;
 		}
 
 		else if (e.getSource() == divButton) {
@@ -257,17 +204,38 @@ public class Calculator implements ActionListener {
 			operand = '*';
 			text.setText("*");
 
-		} else if (e.getSource() == subtractButton) {
+		}
 
-		} else if (e.getSource() == addButton) {
+		else if (e.getSource() == subtractButton) {
+
+			if (text.getText() == "0") {
+				text.setText("-");
+				System.out.println(text.getText().charAt(0));
+			} else if (text.getText().contains("-") == true && num1 <= 0) {
+				num1 = Double.parseDouble(text.getText());
+				System.out.println(num1);
+				operand = '-';
+				text.setText("-");
+			} else if (text.getText().contains("-") == false && num1 <= 0) {
+				num1 = Double.parseDouble(text.getText());
+				System.out.println(num1);
+				operand = '-';
+				text.setText("-");
+
+			} else {
+				num1 = Double.parseDouble(text.getText());
+				System.out.println(num1);
+				operand = '-';
+				text.setText("-");
+			}
+		}
+
+		else if (e.getSource() == addButton) {
 			num1 = Double.parseDouble(text.getText());
 			operand = '+';
 			text.setText("+");
 		} else if (e.getSource() == decimalButton) {
-			if (text.getText().contains(".") == true) {
-
-			} else
-				text.setText(text.getText().concat("."));
+			text.setText(text.getText().concat("."));
 		} else if (e.getSource() == equalButton) {
 			num2 = Double.parseDouble(text.getText());
 			try {
@@ -315,7 +283,5 @@ public class Calculator implements ActionListener {
 		text.setText(String.valueOf(num1));
 
 	}
-
-	
 
 }

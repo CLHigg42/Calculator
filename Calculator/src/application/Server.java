@@ -10,12 +10,8 @@ public class Server {
 	static DataInputStream input = null;
 	static ServerSocket ss = null;
 
-	public static void main(String[] args) throws IOException {
-
-		startServer();
-
-	}
-
+	
+	//Start the server 
 	public static void startServer() throws IOException {
 
 		while (true) {
@@ -45,7 +41,7 @@ public class Server {
 		}
 
 	}
-
+		//Calculations done here. returns answer to CALCULATOR
 	public static void getResult(double num1, double num2, char operand) throws IOException {
 
 		double result = 0;
@@ -75,12 +71,6 @@ public class Server {
 }
 /*
  * TO-DO:
- * 
- 
- * 
- * Delete all console outputs that are not needed 
- * 
- * COMMENT CODE!!!!
  * 
  * finished for now :)
  * 

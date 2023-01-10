@@ -131,7 +131,9 @@ public class Calculator implements ActionListener {
 		frame.getContentPane().setBackground(Color.BLACK);
 
 		frame.setVisible(true);
-
+		
+		
+		//function that handles all keyboard inputs
 		text.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent ke) {
 
@@ -237,7 +239,7 @@ public class Calculator implements ActionListener {
 		}
 
 	}
-
+	// function that handles all UI input
 	public void actionPerformed(ActionEvent e) {
 
 		for (int i = 0; i < 10; i++) {
@@ -346,7 +348,8 @@ public class Calculator implements ActionListener {
 		}
 
 	}
-
+	
+	//Function that gives input to server, gets server output, and displays output for the user.
 	public void getResult() throws IOException {
 
 		if (client == null) {

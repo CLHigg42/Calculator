@@ -1,6 +1,5 @@
 # Java-Calculator 
-![Calculator] (https://media1.giphy.com/media/pqvi7FvmknQfeRB9do/giphy.gif)
-
+![Calculator_GIF](https://media1.giphy.com/media/pqvi7FvmknQfeRB9do/giphy.gif)
 
 
 

@@ -8,7 +8,7 @@
 ### Background
 
 This project was created to demostrate ability with Java to create a simple calculator that would mimic the Iphone calculator GUI
-and hadle inputs and outputs in the same fashion.
+and handle inputs and outputs in the same fashion.
 The calculator can perform simple calculations like add, subtract, divide, and multiply, while also allowing the ability to clear the screen but the calculator will remeber last inputs.
 
 ### Technologies

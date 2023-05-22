@@ -15,5 +15,5 @@ The calculator can perform simple calculations like add, subtract, divide, and m
 
 Java
 JavaFX
-Springboot
+
 

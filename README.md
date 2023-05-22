@@ -13,7 +13,7 @@ The calculator can perform simple calculations like add, subtract, divide, and m
 
 ### Technologies
 
-Java
+Java, 
 JavaFX
 
 
